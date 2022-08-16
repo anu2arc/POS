@@ -1,0 +1,90 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head">
+
+</head>
+
+<body>
+
+    <nav th:replace="snippets.html :: name_navbar"></nav>
+
+    <div class="container">
+        <h3 class="text-center">Sales Report</h3>
+        <!-- Top row with form-->
+        <div class="row">
+            <div class="col-12">
+                <form id="vieworder-form">
+                    <div class="form-group row">
+                        <label for="startdate" class="col-sm-2 col-form-label">Start Date</label>
+                        <div class="col-sm-10" id="brandlist">
+                            <input type="date" class="form-control" name="startDate" id="startdate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="enddate" class="col-sm-2 col-form-label">End Date</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" name="endDate" id="enddate">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="brand" class="col-sm-2 col-form-label">Brand</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="brand" id="brand" placeholder="Enter Brand">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="category" class="col-sm-2 col-form-label">Category</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="category" id="category"
+                                placeholder="Enter Category">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button type="button" class="btn btn-primary" id="search-order"
+                            style="margin-left: 15px;">Download Sales Report</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h3>Inventory Report</h3>
+            </div>
+            &nbsp;
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" id="inventory-report">Download Inventory
+                    Report</button>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-12">
+                <h3>Brand Report</h3>
+            </div>
+            &nbsp;
+            <div class="col-12">
+                <button type="button" class="btn btn-primary" id="brand-report">Download Brand Report</button>
+            </div>
+        </div>
+    </div>
+    <footer class="footer" th:fragment="name_footer">
+        Copyright Increff 2019
+        &nbsp;
+        [[${info.getMessage()}]]
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script th:src="@{/static/reports.js}" />
+        </script>
+        <!-- <script th:src="@{/static/app.js}" />
+        </script> -->
+        <script th:src="@{/static/papaparse.min.js}" />
+        </script>
+        <script th:src="@{/static/notify.js}" />
+        </script>
+    </footer>
+</body>
+
+</html>

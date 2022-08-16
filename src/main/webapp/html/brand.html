@@ -1,0 +1,164 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head">
+
+</head>
+
+<body>
+
+	<nav th:replace="snippets.html :: name_navbar"></nav>
+
+	<div class="container">
+		<h3 class="text-center" style="margin-top: 20px;margin-bottom: 20px;">Brand</h3>
+		<!-- Top row with form-->
+		<div class="row">
+			<div class="col-12">
+				<form id="brand-form">
+					<div class="form-group row">
+						<label for="inputbrand" class="col-sm-2 col-form-label">Brand</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="brand" id="inputbrand"
+								placeholder="Enter Brand">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label for="inputcategory" class="col-sm-2 col-form-label">Category</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="category" id="inputcategory"
+								placeholder="Enter Category">
+						</div>
+					</div>
+					<div class="form-group">
+						<button type="button" class="btn btn-primary" id="add-brand">Add</button>
+						&nbsp;
+						<button type="button" class="btn btn-primary" id="refresh-data">Refresh</button>
+						&nbsp;
+						<button type="button" class="btn btn-primary" id="upload-brand">Upload</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- Blank Row -->
+		<div class="row">
+			&nbsp;
+		</div>
+		<div class="row">
+
+			<!-- Table -->
+			<div class="col-12">
+				<table class="table table-striped" id="brand-table">
+					<thead>
+						<tr>
+							<th scope="col">S.no</th>
+							<th scope="col">Brand</th>
+							<th scope="col">Category</th>
+							<th scope="col">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>Nike</td>
+							<td>Shoes</td>
+							<td>Edit | Delete</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+		<!-- Employee Edit Modal -->
+		<div class="modal" tabindex="-1" role="dialog" id="edit-brand-modal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Edit Employee</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form class="form-inline" id="brand-edit-form">
+							<div class="form-group" style="margin: 10px;">
+								<label for="inputbrand" style="margin-right: 40px;">Brand</label>
+								<div>
+									<input type="text" class="form-control" name="brand" placeholder="enter brand">
+								</div>
+							</div>
+							<div class="form-group" style="margin: 10px;">
+								<label for="inputcategory" style="margin-right: 18px;">Category</label>
+								<div>
+									<input type="text" class="form-control" name="category"
+										placeholder="enter category">
+								</div>
+							</div>
+							<input type="hidden" name="id" value="1">
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="update-brand">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Data Upload model -->
+		<div class="modal" tabindex="-1" role="dialog" id="upload-employee-modal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+
+					<div class="modal-header">
+						<h5 class="modal-title">Upload Data</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+
+					<div class="modal-body">
+						<div class="employee-file">
+							<input type="file" class="custom-file-input" id="employeeFile">
+							<label class="custom-file-label" for="employeeFile" id="employeeFileName">Choose
+								file</label>
+						</div>
+						<a style="color: red;" id="emptyline"></a>
+						<br>
+						<a th:href="@{/static/sample/brand.tsv}" target="_blank">Download Sample</a>
+						<br>
+						Rows: <span id="rowCount">0</span>,
+						Processed: <span id="processCount">0</span>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-primary" id="process-data">Upload</button>
+						<button type="button" class="btn btn-warning" id="download-errors">Download
+							Errors</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div> <!-- Container end-->
+
+	<footer class="footer" th:fragment="name_footer">
+		Copyright Increff 2019
+		&nbsp;
+		[[${info.getMessage()}]]
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<script th:src="@{/static/brand.js}" />
+		</script>
+		<script th:src="@{/static/app.js}" />
+		</script>
+		<script th:src="@{/static/papaparse.min.js}" />
+		</script>
+		<script th:src="@{/static/notify.js}" />
+		</script>
+	</footer>
+</body>
+
+</html>
