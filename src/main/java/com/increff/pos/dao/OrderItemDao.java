@@ -13,19 +13,19 @@ import java.util.List;
 public class OrderItemDao {
     private static final String SELECT_ORDER_ID = "select p from OrderItemPojo p where orderId=:orderId";
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Transactional
-    public void insert(OrderItemPojo p) {
-        em.persist(p);
+    public void insert(OrderItemPojo orderItemPojo) {
+        entityManager.persist(orderItemPojo);
     }
 
-    public List<OrderItemPojo> selectorder(Integer orderId) {
+    public List<OrderItemPojo> selectOrder(Integer orderId) {
         TypedQuery<OrderItemPojo> query = getQuery(SELECT_ORDER_ID);
         query.setParameter("orderId", orderId);
         return query.getResultList();
     }
     TypedQuery<OrderItemPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, OrderItemPojo.class);
+        return entityManager.createQuery(jpql, OrderItemPojo.class);
     }
 }

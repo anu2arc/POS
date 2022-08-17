@@ -13,14 +13,14 @@ import java.util.List;
 @Repository
 public class OrderDto {
     @Autowired
-    private OrderService service;
+    private OrderService orderService;
 
     public OrderData add(){
-        return DtoHelper.convert(service.add());
+        return DtoHelper.convert(orderService.add());
     }
 
     public List<OrderData> getAll() {
-        List<OrderPojo> list=service.getAll();
+        List<OrderPojo> list= orderService.getAll();
         List<OrderData> orderDataList=new ArrayList<>();
         for(OrderPojo item:list){
             orderDataList.add(DtoHelper.convert(item));
@@ -29,14 +29,14 @@ public class OrderDto {
     }
 
     public OrderData getById(Integer id) throws ApiException {
-        return DtoHelper.convert(service.get(id));
+        return DtoHelper.convert(orderService.get(id));
     }
     public void delete(Integer id) {
-        service.delete(id);
+        orderService.delete(id);
     }
 
     public List<OrderData> getByRange(OrderForm f) {
-        List<OrderPojo> list=service.getByRange(f.getStartDate(),f.getEndDate());
+        List<OrderPojo> list= orderService.getByRange(f.getStartDate(),f.getEndDate());
         List<OrderData> orderDataList=new ArrayList<>();
         for(OrderPojo item:list){
             orderDataList.add(DtoHelper.convert(item));

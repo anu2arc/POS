@@ -15,29 +15,29 @@ import java.util.List;
 @RestController
 public class OrderController {
     @Autowired
-    private OrderDto dto;
-
+    private OrderDto orderDto;
+    // todo remove delete
     @ApiOperation(value = "Deletes an order")
-    @RequestMapping(path = "/api/order/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id) {
-        dto.delete(id);
+    @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Integer orderId) {
+        orderDto.delete(orderId);
     }
 
     @ApiOperation(value = "Gets an order by ID")
-    @RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
-    public OrderData get(@PathVariable Integer id) throws ApiException {
-        return dto.getById(id);
+    @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.GET)
+    public OrderData get(@PathVariable Integer orderId) throws ApiException {
+        return orderDto.getById(orderId);
     }
 
-    @ApiOperation(value = "Gets list of all brands")
+    @ApiOperation(value = "Gets list of all orders")
     @RequestMapping(path = "/api/order", method = RequestMethod.GET)
     public List<OrderData> getAll() {
-        return dto.getAll();
+        return orderDto.getAll();
     }
 
     @ApiOperation(value = "list of orders for a date range")
     @RequestMapping(path = "/api/order/range", method = RequestMethod.POST)
     public List<OrderData> getByRange(@RequestBody OrderForm f) throws ApiException {
-        return dto.getByRange(f);
+        return orderDto.getByRange(f);
     }
 }

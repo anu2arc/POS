@@ -14,17 +14,16 @@ import java.util.List;
 public class ProductDao {
     private static final String SELECT_ID = "select p from ProductPojo p where id=:id";
     private static final String SELECT_ALL = "select p from ProductPojo p";
-//    private static final String IS_PRESENT = "select p from ProductPojo p where barcode=barcode";
     private static final String DELETE_ID = "delete from ProductPojo p where id=:id";
     private static final String SELECT_BARCODE = "select p from ProductPojo p where barcode=:barcode";
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Transactional
-    public ProductPojo insert(ProductPojo p){
-        em.persist(p);
-        return p;
+    public ProductPojo insert(ProductPojo productPojo){
+        entityManager.persist(productPojo);
+        return productPojo;
     }
 
     public ProductPojo select(Integer id) {
@@ -45,12 +44,12 @@ public class ProductDao {
     }
 
     public Integer delete(Integer id) {
-        Query query = em.createQuery(DELETE_ID);
+        Query query = entityManager.createQuery(DELETE_ID);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
     TypedQuery<ProductPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, ProductPojo.class);
+        return entityManager.createQuery(jpql, ProductPojo.class);
     }
 
 }

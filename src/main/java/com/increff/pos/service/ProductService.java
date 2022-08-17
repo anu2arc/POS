@@ -13,39 +13,36 @@ import java.util.List;
 @Service
 public class ProductService {
     @Autowired
-    private ProductDao dao;
+    private ProductDao productDao;
 
     @Autowired
     private ProductUtil productUtil;
 
-    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @Transactional(rollbackOn = ApiException.class)
-    public Integer add(ProductPojo p) {
-        normalize(p);
-        return dao.insert(p).getId();
+    public Integer add(ProductPojo productPojo) {
+        return productDao.insert(productPojo).getId();
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void bulkAdd(List<ProductPojo> p) throws ApiException {
+    public void bulkAdd(List<ProductPojo> productPojoList) throws ApiException {
         StringBuilder errorLog=new StringBuilder();
-        for(Integer i=0;i<p.size();i++) {
-            normalize(p.get(i));
+        for(int i = 0; i<productPojoList.size(); i++) {
             try {
-                dao.selectBarcode(p.get(i).getBarcode());
-                errorLog.append((i+1) + ": Duplicate barcode"+"\n");
+                productDao.selectBarcode(productPojoList.get(i).getBarcode());
+                errorLog.append(i + 1).append(": Duplicate barcode").append("\n");
             }
-            catch (Exception e) {
-                dao.insert(p.get(i));
+            catch (Exception exception) {
+                productDao.insert(productPojoList.get(i));
             }
         }
         if(!errorLog.toString().isEmpty())
-        throw new ApiException(errorLog.toString());
+            throw new ApiException(errorLog.toString());
     }
 
     @Transactional
     public void delete(Integer id) {
-        dao.delete(id);
+        productDao.delete(id);
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -60,41 +57,33 @@ public class ProductService {
 
     @Transactional
     public List<ProductPojo> getAll() {
-        return dao.selectAll();
+        return productDao.selectAll();
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(String barcode, ProductPojo p) throws ApiException {
-        normalize(p);
-        ProductPojo ex = getCheckBarcode(barcode);
-        ex.setBarcode(p.getBarcode());
-        ex.setMrp(p.getMrp());
-        ex.setName(p.getName());
+    public void update(String barcode, ProductPojo pojo) throws ApiException {
+        ProductPojo productPojo = getCheckBarcode(barcode);
+        productPojo.setBarcode(pojo.getBarcode());
+        productPojo.setMrp(pojo.getMrp());
+        productPojo.setName(pojo.getName());
     }
 
     @Transactional
     public ProductPojo getCheckBarcode(String barcode) throws ApiException {
         try {
-            ProductPojo p = dao.selectBarcode(barcode);
-            return p;
+            return productDao.selectBarcode(barcode);
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             throw new ApiException("Product with given barcode does not exit, barcode: " + barcode);
         }
     }
     @Transactional
     public ProductPojo getCheck(Integer id) throws ApiException {
         try {
-            ProductPojo p = dao.select(id);
-            return p;
+            return productDao.select(id);
         }
-        catch (Exception e) {
+        catch (Exception exception) {
             throw new ApiException("Product with given barcode does not exit, id: " + id);
         }
-    }
-    protected static void normalize(ProductPojo p) {
-        p.setBarcode(p.getBarcode().toLowerCase().trim());
-        p.setName((p.getName().toLowerCase().trim()));
-        p.setMrp(Double.valueOf(df.format(p.getMrp())));
     }
 }

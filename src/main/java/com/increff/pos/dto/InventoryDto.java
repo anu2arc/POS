@@ -23,14 +23,14 @@ public class InventoryDto {
     @Autowired
     private ProductService productService;
 
-    private static final DecimalFormat df = new DecimalFormat("0.00");
+//    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
 
     public void add(Integer id,InventoryForm form) throws Exception {
         inventoryUtil.validate(form);
         InventoryPojo inventoryPojo= DtoHelper.convert(form);
         inventoryPojo.setId(id);
         try{
-            InventoryPojo ip= inventoryService.getCheck(id);
+            inventoryService.getCheck(id);
             inventoryService.update(id,inventoryPojo);
         }
         catch (ApiException apiException){
@@ -41,7 +41,7 @@ public class InventoryDto {
     public void bulkAdd(List<InventoryForm> inventoryFormList) throws ApiException {
         List<InventoryPojo> inventoryPojoList=new ArrayList<>();
         StringBuilder errorLog=new StringBuilder();
-        for(Integer i=0;i<inventoryFormList.size();i++){
+        for(int i = 0; i<inventoryFormList.size(); i++){
             InventoryForm item=inventoryFormList.get(i);
             try{
                 inventoryUtil.validate(item);
@@ -50,7 +50,7 @@ public class InventoryDto {
                 inventoryPojoList.add(inventoryPojo);
             }
             catch (Exception exception) {
-                errorLog.append((i + 1) + ": " + exception.getMessage() + "\n");
+                errorLog.append(i + 1).append(": ").append(exception.getMessage()).append("\n");
             }
         }
         if(!errorLog.toString().isEmpty())

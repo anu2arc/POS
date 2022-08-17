@@ -16,23 +16,33 @@ import java.util.List;
 public class BrandDto {
 
     @Autowired
-    private BrandService service;
-    @Autowired
-    private BrandUtil brandUtil;
+    private BrandService brandService;
 
+    private void check(BrandForm form) throws ApiException {
+        BrandPojo brandPojo=null;
+        try{
+            brandPojo=brandService.checkPair(form.getBrand(),form.getCategory());
+        }
+        catch (Exception ignored){
+        }
+        if(brandPojo!=null)
+            throw new ApiException("Brand and Category pair already exist");
+    }
     public String add(BrandForm form) throws Exception {
-        brandUtil.validate(form);
+        BrandUtil.validate(form);
+        check(form);
         BrandPojo brandPojo= DtoHelper.convert(form);
-        service.add(brandPojo);
+        brandService.add(brandPojo);
         return "Brand and Category added successfully";
     }
 
     public void bulkAdd(List<BrandForm> forms) throws ApiException {
         List<BrandPojo> list=new ArrayList<>();
         StringBuilder errorLog=new StringBuilder();
-        for(Integer i=0;i<forms.size();i++){
+        for(int i=0;i<forms.size();i++){
             try {
-                brandUtil.validate(forms.get(i));
+                BrandUtil.validate(forms.get(i));
+                check(forms.get(i));
                 list.add(DtoHelper.convert(forms.get(i)));
             } catch (ApiException e) {
                 errorLog.append((i+1) + ": "+e.getMessage()+"\n");
@@ -40,17 +50,18 @@ public class BrandDto {
         }
         if(!errorLog.toString().isEmpty())
             throw new ApiException(errorLog.toString());
-        service.bulkAdd(list);
+        brandService.bulkAdd(list);
     }
 
     public void update(Integer id, BrandForm form) throws ApiException {
-        brandUtil.validate(form);
+        BrandUtil.validate(form);
+        check(form);
         BrandPojo brandPojo= DtoHelper.convert(form);
         brandPojo.setId(id);
-        service.update(brandPojo);
+        brandService.update(brandPojo);
     }
     public List<BrandData> getAll() {
-        List<BrandPojo> brandPojos=service.getAll();
+        List<BrandPojo> brandPojos= brandService.getAll();
         List<BrandData> brandDataList=new ArrayList<>();
         for(BrandPojo brandPojo:brandPojos){
             brandDataList.add(DtoHelper.convert(brandPojo));
@@ -59,10 +70,10 @@ public class BrandDto {
     }
 
     public BrandData getById(Integer id) throws ApiException {
-        return DtoHelper.convert(service.get(id));
+        return DtoHelper.convert(brandService.get(id));
     }
 
     public void delete(Integer id) {
-        service.delete(id);
+        brandService.delete(id);
     }
 }

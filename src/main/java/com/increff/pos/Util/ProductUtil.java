@@ -8,43 +8,42 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
 @Repository
 public class ProductUtil {
 
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private BrandService brandService;
-    public void validate(ProductFrom p) throws ApiException {
-        if(Objects.isNull(p.getBarcode()) || p.getBarcode()=="")
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
+    public void validate(ProductFrom from) throws ApiException {
+        normalize(from);
+        if(Objects.isNull(from.getBarcode()) || from.getBarcode()=="")
             throw new ApiException("Barcode cannot be empty");
-        if(p.getBarcode().length()>20)
+        if(from.getBarcode().length()>20)
             throw new ApiException("Barcode length is too long");
-        if(p.getBrand().equals(""))
+        if(from.getBrand().equals(""))
             throw new ApiException("please provide a brand");
-        if(p.getCategory().equals(""))
+        if(from.getCategory().equals(""))
             throw new ApiException("please provide a category");
-        if(Objects.isNull(p.getName()) || p.getName()=="")
+        if(Objects.isNull(from.getName()) || from.getName()=="")
             throw new ApiException("Product Name cannot be empty");
-        if(p.getName().length()>20)
+        if(from.getName().length()>20)
             throw new ApiException("Name length is too long");
-        if(p.getMrp()==null)
+        if(from.getMrp()==null)
             throw new ApiException("MRP cannot be empty");
-        if(p.getMrp().isNaN())
+        if(from.getMrp().isNaN())
             throw new ApiException("Please provide a valid mrp");
-        if(p.getMrp()==0)
+        if(from.getMrp()==0)
             throw new ApiException("MRP cannot be zero");
-        if(p.getMrp()<0)
+        if(from.getMrp()<0)
             throw new ApiException("MRP cannot be negative value");
-        if(p.getMrp()>1000000)
+        if(from.getMrp()>1000000)
             throw new ApiException("MRP value exceeded the max limit");
-        List<ProductPojo> products= productService.getAll();
-        for(ProductPojo product:products){
-            if(product.getBarcode().equals(p.getBarcode()))
-                throw new ApiException("Barcode already exist");
-        }
+    }
+    protected static void normalize(ProductFrom from) {
+        from.setBarcode(from.getBarcode().toLowerCase().trim());
+        from.setName((from.getName().toLowerCase().trim()));
+        from.setMrp(Double.valueOf(DECIMAL_FORMAT.format(from.getMrp())));
     }
 }

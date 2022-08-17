@@ -18,18 +18,18 @@ public class ProductController {
     @Autowired
     private ProductDto dto;
 
-    @ApiOperation(value = "Adds a product and category")
+    @ApiOperation(value = "Adds a product")
     @RequestMapping(path = "/api/product", method = RequestMethod.POST)
     public String add(@RequestBody ProductFrom form) throws Exception {
         return dto.add(form);
     }
 
-    @ApiOperation(value = "Adds a product and category")
+    @ApiOperation(value = "Adds multiple product")
     @RequestMapping(path = "/api/product/bulk-add", method = RequestMethod.POST)
     public void bulkAdd(@RequestBody List<ProductFrom> form) throws Exception {
         dto.bulkAdd(form);
     }
-
+    // todo remove delete
     @ApiOperation(value = "Deletes product")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Integer id) {
@@ -56,8 +56,8 @@ public class ProductController {
 
     @ApiOperation(value = "Updates an product")
     @RequestMapping(path = "/api/product/{barcode}", method = RequestMethod.PUT)
-    public void update(@PathVariable String barcode, @RequestBody ProductFrom f) throws ApiException {
-        dto.update(barcode, f);
+    public void update(@PathVariable String barcode, @RequestBody ProductFrom productFrom) throws ApiException {
+        dto.update(barcode, productFrom);
     }
 
 }

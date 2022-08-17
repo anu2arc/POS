@@ -19,12 +19,12 @@ public class OrderDao {
     private static final String SELECT_FOR_DATE_RANGE = "select p from OrderPojo p where time >= :startDate and time <= :endDate";
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Transactional
-    public OrderPojo insert(OrderPojo p) {
-        em.persist(p);
-        return p;
+    public OrderPojo insert(OrderPojo orderPojo) {
+        entityManager.persist(orderPojo);
+        return orderPojo;
     }
 
     public OrderPojo select(Integer id) {
@@ -39,19 +39,18 @@ public class OrderDao {
     }
 
     public Integer delete(Integer id) {
-        Query query = em.createQuery(DELETE_ID);
+        Query query = entityManager.createQuery(DELETE_ID);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
     public List<OrderPojo> getByRange(ZonedDateTime startDate, ZonedDateTime endDate) {
-        Query query = em.createQuery(SELECT_FOR_DATE_RANGE);
+        Query query = entityManager.createQuery(SELECT_FOR_DATE_RANGE);
         query.setParameter("startDate", startDate);
         query.setParameter("endDate", endDate);
-        List<OrderPojo> list= query.getResultList();
-        return list;
+        return query.getResultList();
     }
     TypedQuery<OrderPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, OrderPojo.class);
+        return entityManager.createQuery(jpql, OrderPojo.class);
     }
 
 

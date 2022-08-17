@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class InventoryService {
     @Autowired
-    private InventoryDao dao;
+    private InventoryDao inventoryDao;
     @Autowired
     private ProductService productService;
     @Autowired
@@ -22,8 +22,8 @@ public class InventoryService {
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
     @Transactional(rollbackOn = ApiException.class)
-    public void add(InventoryPojo p) {
-        dao.insert(p);
+    public void add(InventoryPojo inventoryPojo) {
+        inventoryDao.insert(inventoryPojo);
     }
     @Transactional(rollbackOn = ApiException.class)
     public void bulkAdd(List<InventoryPojo> itemList) throws ApiException {
@@ -38,19 +38,19 @@ public class InventoryService {
         }
     }
 
-    private void insert(InventoryPojo p){
-        try{
-            InventoryPojo temp=getCheck(p.getId());
-            temp.setQuantity(p.getQuantity());
-        }
-        catch (Exception e){
-            dao.insert(p);
-        }
-    }
+//    private void insert(InventoryPojo inventoryPojo){
+//        try{
+//            InventoryPojo temp=getCheck(inventoryPojo.getId());
+//            temp.setQuantity(inventoryPojo.getQuantity());
+//        }
+//        catch (Exception e){
+//            inventoryDao.insert(inventoryPojo);
+//        }
+//    }
 
     @Transactional
     public void delete(Integer id) {
-        dao.delete(id);
+        inventoryDao.delete(id);
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -60,26 +60,25 @@ public class InventoryService {
 
     @Transactional
     public List<InventoryPojo> getAll() {
-        return dao.selectAll();
+        return inventoryDao.selectAll();
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(Integer id, InventoryPojo p) throws ApiException {
-        InventoryPojo ex = getCheck(id);
-        ex.setQuantity(p.getQuantity());
+    public void update(Integer id, InventoryPojo inventoryPojo) throws ApiException {
+        InventoryPojo pojo = getCheck(id);
+        pojo.setQuantity(inventoryPojo.getQuantity());
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void orderPlace(Integer id,Integer quantity) throws ApiException {
-        InventoryPojo p=getCheck(id);
-        p.setQuantity(p.getQuantity()-quantity);
+        InventoryPojo inventoryPojo=getCheck(id);
+        inventoryPojo.setQuantity(inventoryPojo.getQuantity()-quantity);
     }
 
     @Transactional
     public InventoryPojo getCheck(Integer id) throws ApiException {
         try{
-            InventoryPojo p = dao.select(id);
-            return p;
+            return inventoryDao.select(id);
         }
         catch (Exception exception){
             throw new ApiException("Inventory with given ID does not exit, id: " + id);

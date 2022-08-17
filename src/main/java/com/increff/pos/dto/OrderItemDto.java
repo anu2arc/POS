@@ -3,8 +3,10 @@ package com.increff.pos.dto;
 import com.increff.pos.Util.OrderItemUtil;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
+import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,19 +28,34 @@ public class OrderItemDto {
     @Autowired
     private InventoryService inventoryService;
 
+    private void check(OrderItemForm orderItem) throws ApiException {
+        ProductPojo pp=new ProductPojo();
+        try{
+            pp=productService.getByBarcode(orderItem.getBarcode());
+        }
+        catch (ApiException apiException){
+            throw new ApiException("Invalid barcode :"+orderItem.getBarcode());
+        }
+        InventoryPojo ip=inventoryService.get(pp.getId());
+        if(ip.getQuantity()< orderItem.getQuantity())
+            throw new ApiException("Max Quantity for product "+orderItem.getBarcode()+" is :"+ip.getQuantity());
+        if(orderItem.getSellingprice()> pp.getMrp())
+            throw new ApiException("Selling price cannot be more than MRP for Product :"+orderItem.getBarcode());
+    }
     public List<String> add(List<OrderItemForm> orderItemForms) throws ApiException {
         List<String> response=new ArrayList<>();
         HashMap<String,OrderItemPojo> list=new HashMap<>();
-        OrderPojo op=orderService.add();
-        for(Integer i=0;i<orderItemForms.size();i++) {
+        OrderPojo orderPojo=orderService.add();
+        for(int i = 0; i<orderItemForms.size(); i++) {
             OrderItemForm orderItem=orderItemForms.get(i);
             try{
                 orderItemUtil.validate(orderItem);
+                check(orderItem);
                 if(list.containsKey(orderItem.getBarcode()))
                     throw new ApiException((i+1)+": Duplicate Product Present");
                 else{
                     Integer pid=productService.getByBarcode(orderItem.getBarcode()).getId();
-                    list.put(orderItem.getBarcode(), DtoHelper.convert(orderItem,op.getId(),pid));
+                    list.put(orderItem.getBarcode(), DtoHelper.convert(orderItem,orderPojo.getId(),pid));
                 }
             }
             catch (ApiException apiException){
@@ -46,14 +63,12 @@ public class OrderItemDto {
             }
         }
         if(response.size()==0) {
-            List<OrderItemPojo> orderItemPojoList= new ArrayList<>();
-            for(OrderItemPojo itemPojo:list.values())
-                orderItemPojoList.add(itemPojo);
+            List<OrderItemPojo> orderItemPojoList = new ArrayList<>(list.values());
             orderItemService.add(orderItemPojoList);
-            response.add("Order placed Successfully with orderId :"+op.getId());
+            response.add("Order placed Successfully with orderId :"+orderPojo.getId());
         }
         else {
-            orderService.delete(op.getId());
+            orderService.delete(orderPojo.getId());
         }
         return response;
     }

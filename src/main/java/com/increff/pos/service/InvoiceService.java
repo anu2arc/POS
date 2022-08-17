@@ -28,14 +28,14 @@ public class InvoiceService {
     private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
     @Transactional(rollbackOn = ApiException.class)
     public HttpServletResponse getOrderInvoice(int orderId) throws ApiException, IOException, TransformerException {
-        List<OrderItemPojo> o = orderItemService.getOrder(orderId);
+        List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderId);
         ZonedDateTime time = oService.get(orderId).getTime();
-        Double total = 0.;
+        double total = 0.;
 
-        for (OrderItemPojo i : o) {
-            total += i.getQuantity() * i.getSellingPrice();
+        for (OrderItemPojo itemPojo : orderItemPojoList) {
+            total += itemPojo.getQuantity() * itemPojo.getSellingPrice();
         }
-        OrderItemDataList oItem = new OrderItemDataList(o, time, total, orderId);
+        OrderItemDataList oItem = new OrderItemDataList(orderItemPojoList, time, total, orderId);
         String invoice="main/resources/Invoice/invoice"+orderId+".pdf";
         String xml = jaxbObjectToXML(oItem);
         File xsltFile = new File("src", "main/resources/com/increff/pos/invoice.xml");
@@ -58,10 +58,9 @@ public class InvoiceService {
             JAXBContext jaxbContext = JAXBContext.newInstance(OrderItemDataList.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            StringWriter sw = new StringWriter();
-            jaxbMarshaller.marshal(orderItemList, sw);
-            String xmlContent = sw.toString();
-            return xmlContent;
+            StringWriter stringWriter = new StringWriter();
+            jaxbMarshaller.marshal(orderItemList, stringWriter);
+            return stringWriter.toString();
 
         } catch (JAXBException e) {
             e.printStackTrace();
@@ -72,7 +71,7 @@ public class InvoiceService {
             throws IOException, TransformerException {
 
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-        OutputStream out = new java.io.FileOutputStream(pdf);
+        OutputStream out = Files.newOutputStream(pdf.toPath());
         out = new java.io.BufferedOutputStream(out);
         try {
             Fop fop = null;

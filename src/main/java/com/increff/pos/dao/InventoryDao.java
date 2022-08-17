@@ -17,11 +17,11 @@ public class InventoryDao {
     private static final String DELETE_ID = "delete from InventoryPojo p where id=:id";
 
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Transactional
-    public void insert(InventoryPojo p){
-        em.persist(p);
+    public void insert(InventoryPojo inventoryPojo){
+        entityManager.persist(inventoryPojo);
     }
 
     public InventoryPojo select(Integer id) {
@@ -36,11 +36,11 @@ public class InventoryDao {
     }
 
     public Integer delete(Integer id) {
-        Query query = em.createQuery(DELETE_ID);
+        Query query = entityManager.createQuery(DELETE_ID);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
     TypedQuery<InventoryPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, InventoryPojo.class);
+        return entityManager.createQuery(jpql, InventoryPojo.class);
     }
 }

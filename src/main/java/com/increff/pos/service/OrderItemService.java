@@ -16,14 +16,14 @@ public class OrderItemService {
     private InventoryService inventoryService;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void add(List<OrderItemPojo> p) throws ApiException {
-        for(OrderItemPojo orderItemPojo:p) {
+    public void add(List<OrderItemPojo> orderItemPojoList) throws ApiException {
+        for(OrderItemPojo orderItemPojo:orderItemPojoList) {
             dao.insert(orderItemPojo);
             inventoryService.orderPlace(orderItemPojo.getId(), orderItemPojo.getQuantity());
         }
     }
     @Transactional
     public List<OrderItemPojo> getOrder(Integer orderId) {
-        return dao.selectorder(orderId);
+        return dao.selectOrder(orderId);
     }
 }

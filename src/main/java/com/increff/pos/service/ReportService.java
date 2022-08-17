@@ -27,7 +27,7 @@ public class ReportService {
     @Transactional(rollbackOn = ApiException.class)
     public List<SalesReport> generate(ReportForm form) throws ApiException {
 
-        if((form.getStartDate().equals("") || form.getEndDate().equals("")))
+        if((form.getStartDate().toString().equals("") || form.getEndDate().toString().equals("")))
             throw new ApiException("please provide a valid input");
 
         List<OrderPojo> orderInDateRange=orderService.getByRange(form.getStartDate(),form.getEndDate());
@@ -37,16 +37,16 @@ public class ReportService {
         }
         HashMap<String,HashMap<String, SalesReport>> holder = new HashMap<String, HashMap<String, SalesReport>>();
         List<SalesReport> list=new ArrayList<>();
-        for(OrderItemPojo orderitem: orderItemList){
-            ProductPojo productPojo=productService.get(orderitem.getProductId());
+        for(OrderItemPojo orderItem: orderItemList){
+            ProductPojo productPojo=productService.get(orderItem.getProductId());
             BrandPojo brandPojo=brandService.get(productPojo.getBrand_category());
             if((form.getBrand().equals("") || form.getBrand().equals(brandPojo.getBrand()))
                     && (form.getCategory().equals("")) || form.getCategory().equals(brandPojo.getCategory())){
                 SalesReport reportData=new SalesReport();
                 reportData.setBrand(brandPojo.getBrand());
                 reportData.setCategory(brandPojo.getCategory());
-                reportData.setQuantity(orderitem.getQuantity());
-                reportData.setRevenue(orderitem.getQuantity()*orderitem.getSellingPrice());
+                reportData.setQuantity(orderItem.getQuantity());
+                reportData.setRevenue(orderItem.getQuantity()*orderItem.getSellingPrice());
                 if(holder.containsKey(reportData.getBrand()) && holder.get(reportData.getBrand()).containsKey(reportData.getCategory())){
                     SalesReport rd=holder.get(reportData.getBrand()).get(reportData.getCategory());
                     holder.get(reportData.getBrand()).get(reportData.getCategory()).setQuantity(rd.getQuantity()+ reportData.getQuantity());
@@ -60,9 +60,7 @@ public class ReportService {
             }
         }
         for(HashMap<String, SalesReport> reportData:holder.values()){
-            for(SalesReport rd:reportData.values()){
-                list.add(rd);
-            }
+            list.addAll(reportData.values());
         }
         return list;
     }
@@ -89,9 +87,7 @@ public class ReportService {
             }
         }
         for (HashMap<String,InventoryReport> item: holder.values()) {
-            for(InventoryReport x:item.values()){
-                report.add(x);
-            }
+            report.addAll(item.values());
         }
         return report;
     }

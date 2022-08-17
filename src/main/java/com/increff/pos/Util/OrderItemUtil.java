@@ -19,17 +19,6 @@ public class OrderItemUtil {
     public void validate(OrderItemForm orderItem) throws ApiException {
         if(orderItem.getBarcode().isEmpty())
             throw new ApiException("Barcode cannot be empty");
-        ProductPojo pp=new ProductPojo();
-        try{
-            pp=productService.getByBarcode(orderItem.getBarcode());
-        }
-        catch (ApiException apiException){
-            throw new ApiException("Invalid barcode :"+orderItem.getBarcode());
-        }
-        InventoryPojo ip=inventoryService.get(pp.getId());
-        if(ip.getQuantity()< orderItem.getQuantity())
-            throw new ApiException("Max Quantity for product "+orderItem.getBarcode()+" is :"+ip.getQuantity());
-        if(orderItem.getSellingprice()> pp.getMrp())
-            throw new ApiException("Selling price cannot be more than MRP for Product :"+orderItem.getBarcode());
+
     }
 }

@@ -8,32 +8,24 @@ import com.increff.pos.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Objects;
+
 
 @Repository
 public class BrandUtil {
-    @Autowired
-    private BrandService service;
-
-    @Autowired
-    private BrandDao dao;
-    public void validate(BrandForm p) throws ApiException {
-        if( p.getBrand()=="")
+    public static void validate(BrandForm form) throws ApiException {
+        normalize(form);
+        if(Objects.equals(form.getBrand(), ""))
             throw new ApiException("Brand cannot be empty");
-        if(p.getBrand().length()>20)
+        if(form.getBrand().length()>20)
             throw new ApiException("Brand name too long");
-        if(p.getCategory()=="")
+        if(Objects.equals(form.getCategory(), ""))
             throw new ApiException("Category cannot be empty");
-        if(p.getCategory().length()>20)
+        if(form.getCategory().length()>20)
             throw new ApiException("Category name too long");
-        BrandPojo brandPojo=null;
-        try{
-            brandPojo=dao.setIsPresent(p.getBrand(),p.getCategory());
-        }
-        catch (Exception e){
-        }
-        finally {
-            if(brandPojo!=null)
-                throw new ApiException("Brand and Category pair already exist");
-        }
+    }
+    protected static void normalize(BrandForm brandPojo) {
+        brandPojo.setBrand(brandPojo.getBrand().toLowerCase().trim());
+        brandPojo.setCategory(brandPojo.getCategory().toLowerCase().trim());
     }
 }

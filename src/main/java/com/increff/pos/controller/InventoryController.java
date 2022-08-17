@@ -15,47 +15,48 @@ import java.util.List;
 @RestController
 public class InventoryController {
     @Autowired
-    private InventoryDto dto;
+    private InventoryDto inventoryDto;
 
     @ApiOperation(value = "Adds an inventory")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.POST)
     public void add(@PathVariable Integer id,@RequestBody InventoryForm form) throws Exception {
-        dto.add(id,form);
+        inventoryDto.add(id,form);
     }
 
     @ApiOperation(value = "Adds multiple inventory")
     @RequestMapping(path = "/api/inventory/bulk-add", method = RequestMethod.POST)
     public void bulkAdd(@RequestBody List<InventoryForm> forms) throws Exception {
-        dto.bulkAdd(forms);
+        inventoryDto.bulkAdd(forms);
     }
+    // todo remove delete
 
     @ApiOperation(value = "Deletes inventory")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable Integer id) {
-        dto.delete(id);
+        inventoryDto.delete(id);
     }
 
     @ApiOperation(value = "Gets an inventory by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
     public InventoryData get(@PathVariable Integer id) throws ApiException {
-        return dto.getById(id);
+        return inventoryDto.getById(id);
     }
 
     @ApiOperation(value = "Gets an inventory by Barcode")
     @RequestMapping(path = "/api/inventory/barcode/{barcode}", method = RequestMethod.GET)
     public InventoryData get(@PathVariable String barcode) throws ApiException {
-        return dto.getByBarcode(barcode);
+        return inventoryDto.getByBarcode(barcode);
     }
 
     @ApiOperation(value = "Gets a list of all inventory")
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
     public List<InventoryData> getAll() {
-        return dto.getAll();
+        return inventoryDto.getAll();
     }
 
     @ApiOperation(value = "Updates an inventory")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable Integer id, @RequestBody InventoryForm form) throws ApiException {
-        dto.update(id, form);
+        inventoryDto.update(id, form);
     }
 }

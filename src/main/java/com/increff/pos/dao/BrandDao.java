@@ -17,12 +17,12 @@ public class BrandDao {
     private static final String SELECT_ALL = "select p from BrandPojo p";
     private static final String IS_PRESENT_BRAND_CATEGORY = "select p from BrandPojo p where brand=:brand and category=:category";
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Transactional
-    public BrandPojo insert(BrandPojo p) {
-        em.persist(p);
-        return p;
+    public BrandPojo insert(BrandPojo brandPojo) {
+        entityManager.persist(brandPojo);
+        return brandPojo;
     }
 
     public BrandPojo setIsPresent(String brand, String category){
@@ -33,7 +33,7 @@ public class BrandDao {
     }
 
     public Integer delete(Integer id) {
-        Query query = em.createQuery(DELETE_ID);
+        Query query = entityManager.createQuery(DELETE_ID);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
@@ -50,7 +50,7 @@ public class BrandDao {
     }
 
     TypedQuery<BrandPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, BrandPojo.class);
+        return entityManager.createQuery(jpql, BrandPojo.class);
     }
 
 }

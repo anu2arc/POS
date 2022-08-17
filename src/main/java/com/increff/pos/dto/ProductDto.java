@@ -24,14 +24,22 @@ public class ProductDto {
     private ProductUtil productUtil;
     @Autowired
     private BrandService brandService;
-    private static final DecimalFormat df = new DecimalFormat("0.00");
-
-    public String add(ProductFrom f) throws Exception {
-        productUtil.validate(f);
-        normalize(f);
-        ProductPojo p= DtoHelper.convert(f);
+    private void check(ProductFrom form) throws ApiException {
+        ProductPojo productPojo=null;
         try{
-            BrandPojo brandPojo=brandService.checkPair(f.getBrand(),f.getCategory());
+            productPojo=service.getCheckBarcode(form.getBarcode());
+        }
+        catch (Exception ignored){
+        }
+        if(productPojo!=null)
+            throw new ApiException("Barcode already exist");
+    }
+    public String add(ProductFrom productFrom) throws Exception {
+        productUtil.validate(productFrom);
+        check(productFrom);
+        ProductPojo p= DtoHelper.convert(productFrom);
+        try{
+            BrandPojo brandPojo=brandService.checkPair(productFrom.getBrand(),productFrom.getCategory());
             p.setBrand_category(brandPojo.getId());
         }
         catch (Exception e){
@@ -41,25 +49,25 @@ public class ProductDto {
         return "Product added successfully";
     }
 
-    public void bulkAdd(List<ProductFrom> p) throws ApiException {
+    public void bulkAdd(List<ProductFrom> productFromList) throws ApiException {
         StringBuilder errorLog=new StringBuilder();
         List<ProductPojo> list=new ArrayList<>();
-        for(Integer i=0;i<p.size();i++){
-            normalize(p.get(i));
-            ProductPojo temp=new ProductPojo();
+        for(int i = 0; i<productFromList.size(); i++){
+            ProductPojo productPojo=new ProductPojo();
             try {
-                productUtil.validate(p.get(i));
-                temp= DtoHelper.convert(p.get(i));
+                productUtil.validate(productFromList.get(i));
+                check(productFromList.get(i));
+                productPojo= DtoHelper.convert(productFromList.get(i));
             } catch (ApiException e) {
-                errorLog.append((i+1) + ": "+e.getMessage()+"\n");
+                errorLog.append(i + 1).append(": ").append(e.getMessage()).append("\n");
             }
             try{
-                BrandPojo brandPojo=brandService.checkPair(p.get(i).getBrand(),p.get(i).getCategory());
-                temp.setBrand_category(brandPojo.getId());
-                list.add(temp);
+                BrandPojo brandPojo=brandService.checkPair(productFromList.get(i).getBrand(),productFromList.get(i).getCategory());
+                productPojo.setBrand_category(brandPojo.getId());
+                list.add(productPojo);
             }
             catch (Exception e){
-                errorLog.append((i+1) + ": please provide a valid brand category pair");
+                errorLog.append(i + 1).append(": please provide a valid brand category pair");
             }
         }
         if(errorLog.length()>0)
@@ -67,15 +75,15 @@ public class ProductDto {
         service.bulkAdd(list);
     }
 
-    public void update(String barcode, ProductFrom p) throws ApiException {
-        productUtil.validate(p);
-        normalize(p);
-        ProductPojo f= DtoHelper.convert(p);
+    public void update(String barcode, ProductFrom productFrom) throws ApiException {
+        productUtil.validate(productFrom);
+        check(productFrom);
+        ProductPojo f= DtoHelper.convert(productFrom);
         try{
-            BrandPojo brandPojo=brandService.checkPair(p.getBrand(),p.getCategory());
+            BrandPojo brandPojo=brandService.checkPair(productFrom.getBrand(),productFrom.getCategory());
             f.setBrand_category(brandPojo.getId());
         }
-        catch (Exception e){
+        catch (Exception exception){
             throw new ApiException("please provide a valid brand category pair");
         }
         service.update(barcode,f);
@@ -102,11 +110,5 @@ public class ProductDto {
 
     public void delete(Integer id) {
         service.delete(id);
-    }
-    protected static void normalize(ProductFrom p) {
-        if(!p.getBarcode().isEmpty())
-        p.setBarcode(p.getBarcode().toLowerCase().trim());
-        p.setName((p.getName().toLowerCase().trim()));
-        p.setMrp(Double.valueOf(df.format(p.getMrp())));
     }
 }

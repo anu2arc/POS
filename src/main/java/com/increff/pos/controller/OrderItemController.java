@@ -19,27 +19,23 @@ import java.util.List;
 @Api
 @RestController
 public class OrderItemController {
-
     @Autowired
-    private OrderItemDto dto;
-
+    private OrderItemDto orderItemDto;
     @Autowired
     private InvoiceService service;
     @ApiOperation(value = "place order")
-    @RequestMapping(path = "/api/orderitem", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/order-item", method = RequestMethod.POST)
     public List<String> add(@RequestBody List<OrderItemForm> form) throws Exception {
-        return dto.add(form);
+        return orderItemDto.add(form);
     }
-
-    @ApiOperation(value = "Gets an product by ID")
-    @RequestMapping(path = "/api/orderitem/{id}", method = RequestMethod.GET)
-    public List<OrderItemData> get(@PathVariable Integer id) throws ApiException {
-        return dto.getOrder(id);
+    @ApiOperation(value = "Gets all items by orderId")
+    @RequestMapping(path = "/api/order-item/{orderId}", method = RequestMethod.GET)
+    public List<OrderItemData> get(@PathVariable Integer orderId) throws ApiException {
+        return orderItemDto.getOrder(orderId);
     }
-
-    @ApiOperation(value = "Gets an product by ID")
-    @RequestMapping(path = "/api/orderitem/invoice/{id}", method = RequestMethod.GET)
-    public HttpServletResponse getInvoice(@PathVariable Integer id) throws ApiException, IOException, TransformerException {
-        return service.getOrderInvoice(id);
+    @ApiOperation(value = "Gets invoice for an orderID")
+    @RequestMapping(path = "/api/order-item/invoice/{orderId}", method = RequestMethod.GET)
+    public HttpServletResponse getInvoice(@PathVariable Integer orderId) throws ApiException, IOException, TransformerException {
+        return service.getOrderInvoice(orderId);
     }
 }
