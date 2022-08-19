@@ -1,6 +1,10 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.Data.*;
+import com.increff.pos.model.Form.BrandForm;
+import com.increff.pos.model.Form.InventoryForm;
+import com.increff.pos.model.Form.OrderItemForm;
+import com.increff.pos.model.Form.ProductFrom;
 import com.increff.pos.pojo.*;
 import org.springframework.stereotype.Repository;
 
@@ -45,7 +49,7 @@ public class DtoHelper {
         od.setOrderId(f.getOrderId());
         return od;
     }
-    public static OrderItemPojo convert(OrderItemForm f, int orderId,Integer productId) {
+    public static OrderItemPojo convert(OrderItemForm f, int orderId, Integer productId) {
         OrderItemPojo p=new OrderItemPojo();
         p.setProductId(productId);
         p.setQuantity(f.getQuantity());
@@ -58,7 +62,7 @@ public class DtoHelper {
         d.setId(p.getId());
         d.setName(p.getName());
         d.setBarcode(p.getBarcode());
-        d.setBrandCategory(p.getBrand_category());
+        d.setBrandCategory(p.getBrandCategory());
         d.setMrp(p.getMrp());
         return d;
     }

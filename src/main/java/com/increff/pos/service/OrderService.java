@@ -13,7 +13,6 @@ import java.util.List;
 public class OrderService {
     @Autowired
     private OrderDao orderDao;
-
     @Transactional(rollbackOn = ApiException.class)
     public OrderPojo add() {
         OrderPojo orderPojo=new OrderPojo();
@@ -21,7 +20,7 @@ public class OrderService {
         orderDao.insert(orderPojo);
         return orderPojo;
     }
-
+    //todo remove
     @Transactional
     public void delete(Integer id) {
         orderDao.delete(id);
@@ -29,21 +28,17 @@ public class OrderService {
 
     @Transactional(rollbackOn = ApiException.class)
     public OrderPojo get(Integer id) throws ApiException {
-        return getCheck(id);
-    }
-
-    @Transactional
-    public List<OrderPojo> getAll() {
-        return orderDao.selectAll();
-    }
-    @Transactional
-    public OrderPojo getCheck(Integer id) throws ApiException {
         try{
             return orderDao.select(id);
         }
         catch (Exception exception){
             throw new ApiException("Order with given ID does not exit, id: " + id);
         }
+    }
+
+    @Transactional
+    public List<OrderPojo> getAll() {
+        return orderDao.selectAll();
     }
     @Transactional
     public List<OrderPojo> getByRange(ZonedDateTime startDate, ZonedDateTime endDate) {

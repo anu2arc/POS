@@ -1,8 +1,8 @@
 package com.increff.pos.controller;
 
 import com.increff.pos.dto.BrandDto;
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
+import com.increff.pos.model.Data.BrandData;
+import com.increff.pos.model.Form.BrandForm;
 import com.increff.pos.service.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +16,6 @@ import java.util.List;
 public class BrandController {
     @Autowired
     private BrandDto brandDto;
-
     @ApiOperation(value = "Adds a brand and category")
     @RequestMapping(path = "/api/brand", method = RequestMethod.POST)
     public String add(@RequestBody BrandForm form) throws Exception {

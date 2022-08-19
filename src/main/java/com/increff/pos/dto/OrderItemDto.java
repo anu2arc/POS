@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.Util.OrderItemUtil;
-import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.Data.OrderItemData;
+import com.increff.pos.model.Form.OrderItemForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
@@ -29,7 +29,7 @@ public class OrderItemDto {
     private InventoryService inventoryService;
 
     private void check(OrderItemForm orderItem) throws ApiException {
-        ProductPojo pp=new ProductPojo();
+        ProductPojo pp=null;
         try{
             pp=productService.getByBarcode(orderItem.getBarcode());
         }
@@ -42,8 +42,8 @@ public class OrderItemDto {
         if(orderItem.getSellingprice()> pp.getMrp())
             throw new ApiException("Selling price cannot be more than MRP for Product :"+orderItem.getBarcode());
     }
-    public List<String> add(List<OrderItemForm> orderItemForms) throws ApiException {
-        List<String> response=new ArrayList<>();
+    public String add(List<OrderItemForm> orderItemForms) throws ApiException {
+        StringBuilder response=new StringBuilder();
         HashMap<String,OrderItemPojo> list=new HashMap<>();
         OrderPojo orderPojo=orderService.add();
         for(int i = 0; i<orderItemForms.size(); i++) {
@@ -59,27 +59,26 @@ public class OrderItemDto {
                 }
             }
             catch (ApiException apiException){
-                response.add(apiException.getMessage());
+                response.append(apiException.getMessage()).append("\n");
             }
         }
-        if(response.size()==0) {
+        if(response.toString().isEmpty()) {
             List<OrderItemPojo> orderItemPojoList = new ArrayList<>(list.values());
             orderItemService.add(orderItemPojoList);
-            response.add("Order placed Successfully with orderId :"+orderPojo.getId());
+            response.append("Order placed Successfully with orderId :").append(orderPojo.getId());
+            return response.toString();
         }
         else {
             orderService.delete(orderPojo.getId());
+            throw new ApiException(response.toString());
         }
-        return response;
     }
-
     public List<OrderItemData> getOrder(Integer orderId) {
         List<OrderItemPojo> list=orderItemService.getOrder(orderId);
-        List<OrderItemData> orderitem=new ArrayList<>();
+        List<OrderItemData> orderItemData=new ArrayList<>();
         for(OrderItemPojo item:list){
-            orderitem.add(DtoHelper.convert(item));
+            orderItemData.add(DtoHelper.convert(item));
         }
-        return orderitem;
+        return orderItemData;
     }
-
 }

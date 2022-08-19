@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.Util.InventoryUtil;
-import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.Data.InventoryData;
+import com.increff.pos.model.Form.InventoryForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.InventoryService;
@@ -10,7 +10,6 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +22,18 @@ public class InventoryDto {
     @Autowired
     private ProductService productService;
 
-//    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
-
     public void add(Integer id,InventoryForm form) throws Exception {
         inventoryUtil.validate(form);
         InventoryPojo inventoryPojo= DtoHelper.convert(form);
         inventoryPojo.setId(id);
         try{
-            inventoryService.getCheck(id);
+            inventoryService.get(id);
             inventoryService.update(id,inventoryPojo);
         }
         catch (ApiException apiException){
             inventoryService.add(inventoryPojo);
         }
     }
-
     public void bulkAdd(List<InventoryForm> inventoryFormList) throws ApiException {
         List<InventoryPojo> inventoryPojoList=new ArrayList<>();
         StringBuilder errorLog=new StringBuilder();

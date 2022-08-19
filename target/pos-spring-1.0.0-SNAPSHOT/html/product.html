@@ -119,14 +119,17 @@
                                 </div>
                             </div>
                             <div class="form-group" style="margin: 10px;">
-                                <label for="brandcategory" style="margin-right: 7px;">Brand Category</label>
+                                <label for="ebrand" style="margin-right: 7px;">Brand</label>
                                 <div class="col-sm-6">
-                                    <!--                                <select class="form-control" id="brandcategory" name="brand_category">-->
-                                    <!--                                    <option value=1 >hp-laptop</option>-->
-                                    <input type="text" class="form-control" id="fbrandcategory" name="fbrand_category"
-                                        disabled>
-                                    <input type="hidden" class="form-control" id="brandcategory" name="brand_category">
-                                    <!--                                </select>-->
+                                    <input type="text" class="form-control" id="fbrand" name="fbrand" disabled style="margin-left: 70px;">
+                                    <input type="hidden" class="form-control" id="ebrand" name="brand">
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin: 10px;">
+                                <label for="ecategory" style="margin-right: 7px;">Category</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" id="fcategory" name="fcategory" disabled style="margin-left: 48px;">
+                                    <input type="hidden" class="form-control" id="ecategory" name="category">
                                 </div>
                             </div>
                             <div class="form-group" style="margin: 10px;">
@@ -173,7 +176,7 @@
                         </div>
                         <a style="color: red;" id="emptyline"></a>
                         <br>
-                        <a th:href="@{/static/brand.tsv}" target="_blank">Download Sample</a>
+                        <a th:href="@{/static/sample/product.tsv}" target="_blank">Download Sample</a>
                         <br>
                         Rows: <span id="rowCount">0</span>,
                         Processed: <span id="processCount">0</span>

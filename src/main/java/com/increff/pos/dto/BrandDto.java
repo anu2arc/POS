@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.Util.BrandUtil;
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
+import com.increff.pos.model.Data.BrandData;
+import com.increff.pos.model.Form.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
@@ -28,14 +28,13 @@ public class BrandDto {
         if(brandPojo!=null)
             throw new ApiException("Brand and Category pair already exist");
     }
-    public String add(BrandForm form) throws Exception {
+    public String add(BrandForm form) throws ApiException {
         BrandUtil.validate(form);
         check(form);
         BrandPojo brandPojo= DtoHelper.convert(form);
         brandService.add(brandPojo);
         return "Brand and Category added successfully";
     }
-
     public void bulkAdd(List<BrandForm> forms) throws ApiException {
         List<BrandPojo> list=new ArrayList<>();
         StringBuilder errorLog=new StringBuilder();
@@ -45,7 +44,7 @@ public class BrandDto {
                 check(forms.get(i));
                 list.add(DtoHelper.convert(forms.get(i)));
             } catch (ApiException e) {
-                errorLog.append((i+1) + ": "+e.getMessage()+"\n");
+                errorLog.append(i + 1).append(": ").append(e.getMessage()).append("\n");
             }
         }
         if(!errorLog.toString().isEmpty())
@@ -55,7 +54,6 @@ public class BrandDto {
 
     public void update(Integer id, BrandForm form) throws ApiException {
         BrandUtil.validate(form);
-        check(form);
         BrandPojo brandPojo= DtoHelper.convert(form);
         brandPojo.setId(id);
         brandService.update(brandPojo);
@@ -72,7 +70,7 @@ public class BrandDto {
     public BrandData getById(Integer id) throws ApiException {
         return DtoHelper.convert(brandService.get(id));
     }
-
+    //todo remove
     public void delete(Integer id) {
         brandService.delete(id);
     }

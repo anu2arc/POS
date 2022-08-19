@@ -110,31 +110,6 @@ function displayProductList(data) {
     }
 }
 
-// function setOptions(branddata) {
-//     var $options = $('#brandlist').find('select');
-//     $options.empty();
-//     for (var i in branddata) {
-//         var data = branddata[i];
-//         var row = '<option value=' + data.id + '>' + data.brand + '-' + data.category + '</option>';
-//         $options.append(row);
-//     }
-// }
-
-// function setBrandCategory() {
-//     var url = $("meta[name=baseUrl]").attr("content") + "/api/brand";
-//     $.ajax({
-//         url: url,
-//         type: 'GET',
-//         success: function (branddata) {
-//             setOptions(branddata);
-//         },
-//         error: function (response) {
-//             $.notify(response['responseJSON']['description'], { autoHide: false });
-//         }
-//     });
-// }
-
-
 function getBrandCategory(productdata) {
     var url = $("meta[name=baseUrl]").attr("content") + "/api/brand" + "/" + productdata.brandCategory;
     $.ajax({
@@ -164,13 +139,14 @@ function displayEditProduct(id) {
 }
 
 function displayProduct(data) {
+console.log(data);
     $("#product-edit-form input[name=barcode]").val(data.barcode);
     $("#product-edit-form input[name=fbarcode]").val(data.barcode);
     $("#product-edit-form input[name=name]").val(data.name);
     $("#product-edit-form input[name=mrp]").val(data.mrp);
     $('#edit-product-modal').modal('toggle');
-    $("#product-edit-form input[name=brand_category]").val(data.brand_category);
-    setEdit(data.brand_category);
+//    $("#product-edit-form input[name=brand_category]").val(data.brand_category);
+    setEdit(data.brandCategory);
 }
 
 function setEdit(id) {
@@ -189,8 +165,10 @@ function setEdit(id) {
 }
 
 function setEditOptions(branddata) {
-    //   $("#product-edit-form input[name=brand_category]").val(branddata.brand+'-'+branddata.category);
-    $("#product-edit-form input[name=fbrand_category]").val(branddata.brand + '-' + branddata.category);
+    $("#product-edit-form input[name=brand]").val(branddata.brand);
+    $("#product-edit-form input[name=fbrand]").val(branddata.brand);
+    $("#product-edit-form input[name=category]").val(branddata.category);
+    $("#product-edit-form input[name=fcategory]").val(branddata.category);
 }
 
 //HELPER METHOD

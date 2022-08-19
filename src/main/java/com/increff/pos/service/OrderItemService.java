@@ -19,7 +19,7 @@ public class OrderItemService {
     public void add(List<OrderItemPojo> orderItemPojoList) throws ApiException {
         for(OrderItemPojo orderItemPojo:orderItemPojoList) {
             dao.insert(orderItemPojo);
-            inventoryService.orderPlace(orderItemPojo.getId(), orderItemPojo.getQuantity());
+            inventoryService.orderPlace(orderItemPojo.getProductId(), orderItemPojo.getQuantity());
         }
     }
     @Transactional

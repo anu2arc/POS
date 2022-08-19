@@ -2,8 +2,8 @@ package com.increff.pos.controller;
 
 
 import com.increff.pos.dto.OrderItemDto;
-import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.Data.OrderItemData;
+import com.increff.pos.model.Form.OrderItemForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.InvoiceService;
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ public class OrderItemController {
     private InvoiceService service;
     @ApiOperation(value = "place order")
     @RequestMapping(path = "/api/order-item", method = RequestMethod.POST)
-    public List<String> add(@RequestBody List<OrderItemForm> form) throws Exception {
+    public String add(@RequestBody List<OrderItemForm> form) throws Exception {
         return orderItemDto.add(form);
     }
     @ApiOperation(value = "Gets all items by orderId")

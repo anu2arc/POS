@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.Util.ProductUtil;
-import com.increff.pos.model.ProductData;
-import com.increff.pos.model.ProductFrom;
+import com.increff.pos.model.Data.ProductData;
+import com.increff.pos.model.Form.ProductFrom;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -11,7 +11,6 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class ProductDto {
     private void check(ProductFrom form) throws ApiException {
         ProductPojo productPojo=null;
         try{
-            productPojo=service.getCheckBarcode(form.getBarcode());
+            productPojo=service.getByBarcode(form.getBarcode());
         }
         catch (Exception ignored){
         }
@@ -40,7 +39,7 @@ public class ProductDto {
         ProductPojo p= DtoHelper.convert(productFrom);
         try{
             BrandPojo brandPojo=brandService.checkPair(productFrom.getBrand(),productFrom.getCategory());
-            p.setBrand_category(brandPojo.getId());
+            p.setBrandCategory(brandPojo.getId());
         }
         catch (Exception e){
             throw new ApiException("please provide a valid brand category pair");
@@ -63,7 +62,7 @@ public class ProductDto {
             }
             try{
                 BrandPojo brandPojo=brandService.checkPair(productFromList.get(i).getBrand(),productFromList.get(i).getCategory());
-                productPojo.setBrand_category(brandPojo.getId());
+                productPojo.setBrandCategory(brandPojo.getId());
                 list.add(productPojo);
             }
             catch (Exception e){
@@ -77,16 +76,15 @@ public class ProductDto {
 
     public void update(String barcode, ProductFrom productFrom) throws ApiException {
         productUtil.validate(productFrom);
-        check(productFrom);
-        ProductPojo f= DtoHelper.convert(productFrom);
+        ProductPojo productPojo=DtoHelper.convert(productFrom);
         try{
             BrandPojo brandPojo=brandService.checkPair(productFrom.getBrand(),productFrom.getCategory());
-            f.setBrand_category(brandPojo.getId());
+            productPojo.setBrandCategory(brandPojo.getId());
         }
         catch (Exception exception){
             throw new ApiException("please provide a valid brand category pair");
         }
-        service.update(barcode,f);
+        service.update(barcode,productPojo);
     }
 
     public List<ProductData> getAll() {
@@ -107,7 +105,7 @@ public class ProductDto {
             throw new ApiException("Barcode cannot be empty");
         return DtoHelper.convert(service.getByBarcode(barcode));
     }
-
+    //todo remove
     public void delete(Integer id) {
         service.delete(id);
     }

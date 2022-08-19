@@ -1,6 +1,6 @@
 package com.increff.pos.dto;
-import com.increff.pos.model.OrderData;
-import com.increff.pos.model.OrderForm;
+import com.increff.pos.model.Data.OrderData;
+import com.increff.pos.model.Form.OrderForm;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.OrderService;

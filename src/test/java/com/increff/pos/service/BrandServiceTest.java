@@ -1,9 +1,9 @@
 package com.increff.pos.service;
 
+import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.pojo.BrandPojo;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,15 @@ public class BrandServiceTest extends AbstractUnitTest {
     public void testAdd(){
         BrandPojo brandPojo=createBrand();
         brandService.add(brandPojo);
+    }
+
+    @Test
+    public void testGetWithWrongID(){
+        try{
+            brandService.get(0);
+        } catch (ApiException exception) {
+            assertEquals("Brand with given ID does not exit, id: 0",exception.getMessage().trim());
+        }
     }
 
     @Test
@@ -68,7 +77,7 @@ public class BrandServiceTest extends AbstractUnitTest {
     public void testUpdate() throws ApiException {
         BrandPojo brandPojo=createBrand();
         brandService.add((brandPojo));
-        brandPojo.setCategory(" BaGs ");
+        brandPojo.setCategory("bags");
         brandService.update(brandPojo);
         brandPojo=brandService.get(brandPojo.getId());
         assertEquals("nike",brandPojo.getBrand());

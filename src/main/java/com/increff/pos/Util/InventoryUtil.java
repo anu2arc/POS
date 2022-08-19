@@ -1,6 +1,6 @@
 package com.increff.pos.Util;
 
-import com.increff.pos.model.InventoryForm;
+import com.increff.pos.model.Form.InventoryForm;
 import com.increff.pos.service.ApiException;
 import org.springframework.stereotype.Repository;
 

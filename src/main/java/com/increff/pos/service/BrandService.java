@@ -56,5 +56,4 @@ public class BrandService {
     public BrandPojo checkPair(String brand,String Category){
         return brandDao.setIsPresent(brand, Category);
     }
-
 }

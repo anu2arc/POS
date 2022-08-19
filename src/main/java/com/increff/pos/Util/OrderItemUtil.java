@@ -1,8 +1,6 @@
 package com.increff.pos.Util;
 
-import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.model.Form.OrderItemForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;

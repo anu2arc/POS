@@ -181,12 +181,9 @@ function readFileDataCallback(results) {
 }
 
 function uploadRows() {
-	//Process next row
-
 	var json = JSON.stringify(fileData);
-	var url = getBaseUrl() + "/bulkadd";
+	var url = getBaseUrl() + "/bulk-add";
 	console.log(json);
-	//Make ajax call
 	$.ajax({
 		url: url,
 		type: 'POST',

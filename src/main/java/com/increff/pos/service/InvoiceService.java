@@ -1,5 +1,5 @@
 package com.increff.pos.service;
-import com.increff.pos.model.OrderItemDataList;
+import com.increff.pos.model.Data.OrderItemDataList;
 import com.increff.pos.pojo.OrderItemPojo;
 import org.apache.fop.apps.*;
 import org.springframework.beans.factory.annotation.Autowired;

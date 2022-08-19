@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -39,7 +38,7 @@ public class ProductService {
         if(!errorLog.toString().isEmpty())
             throw new ApiException(errorLog.toString());
     }
-
+    // todo remove
     @Transactional
     public void delete(Integer id) {
         productDao.delete(id);
@@ -47,12 +46,22 @@ public class ProductService {
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo get(Integer id) throws ApiException {
-        return getCheck(id);
+        try {
+            return productDao.select(id);
+        }
+        catch (Exception exception) {
+            throw new ApiException("Product with given ID does not exit, id: " + id);
+        }
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo getByBarcode(String barcode) throws ApiException {
-        return getCheckBarcode(barcode);
+        try {
+            return productDao.selectBarcode(barcode);
+        }
+        catch (Exception exception) {
+            throw new ApiException("Product with given barcode does not exit, barcode: " + barcode);
+        }
     }
 
     @Transactional
@@ -62,28 +71,9 @@ public class ProductService {
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(String barcode, ProductPojo pojo) throws ApiException {
-        ProductPojo productPojo = getCheckBarcode(barcode);
+        ProductPojo productPojo = getByBarcode(barcode);
         productPojo.setBarcode(pojo.getBarcode());
         productPojo.setMrp(pojo.getMrp());
         productPojo.setName(pojo.getName());
-    }
-
-    @Transactional
-    public ProductPojo getCheckBarcode(String barcode) throws ApiException {
-        try {
-            return productDao.selectBarcode(barcode);
-        }
-        catch (Exception exception) {
-            throw new ApiException("Product with given barcode does not exit, barcode: " + barcode);
-        }
-    }
-    @Transactional
-    public ProductPojo getCheck(Integer id) throws ApiException {
-        try {
-            return productDao.select(id);
-        }
-        catch (Exception exception) {
-            throw new ApiException("Product with given barcode does not exit, id: " + id);
-        }
     }
 }
