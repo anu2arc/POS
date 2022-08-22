@@ -73,22 +73,6 @@ function getBrandList() {
 	});
 }
 
-function deleteBrandCategory(id) {
-	var url = getBaseUrl() + "/" + id;
-
-	$.ajax({
-		url: url,
-		type: 'DELETE',
-		success: function (data) {
-			$.notify("brand category deleted successfuly", "success");
-			getBrandList();     //...
-		},
-		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
-		}
-	});
-}
-
 //UI DISPLAY METHODS
 
 function displayBrandList(data) {
@@ -98,8 +82,7 @@ function displayBrandList(data) {
 	var button = 'type="button" class="btn btn-primary"';
 	for (var i in data) {
 		var e = data[i];
-		var buttonHtml = '<button ' + button + ' onclick="deleteBrandCategory(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button ' + button + ' onclick="displayEditBrand(' + e.id + ')">edit</button>'
+		var buttonHtml = ' <button ' + button + ' onclick="displayEditBrand(' + e.id + ')">Edit</button>';
 		var row = '<tr>'
 			+ '<td>' + count + '</td>'
 			+ '<td>' + e.brand + '</td>'

@@ -29,6 +29,14 @@ public class OrderServiceTest extends AbstractUnitTest {
     }
 
     @Test
+    public void testDelete() throws ApiException {
+        OrderPojo orderPojo= orderService.add();
+        orderService.delete(orderPojo.getId());
+        List<OrderPojo> list=orderService.getAll();
+        assertEquals(0,list.size());
+    }
+
+    @Test
     public void testGetWithWrongID(){
         try{
             orderService.get(0);

@@ -68,28 +68,12 @@ function getProductList() {
     });
 }
 
-function deleteProduct(id) {
-    var url = getBaseUrl() + "/" + id;
-
-    $.ajax({
-        url: url,
-        type: 'DELETE',
-        success: function (data) {
-            getProductList(); //...
-        },
-        error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
-        }
-    });
-}
-
 //UI DISPLAY METHODS
 
 function createtable(productdata, branddata) {
     var $tbody = $('#product-table').find('tbody');
     var button = 'type="button" class="btn btn-primary"';
-    var buttonHtml = '<button ' + button + ' onclick="deleteProduct(' + productdata.id + ')">delete</button>'
-    buttonHtml += ' <button ' + button + ' onclick="displayEditProduct(' + productdata.id + ')">edit</button>'
+    var buttonHtml = ' <button ' + button + ' onclick="displayEditProduct(' + productdata.id + ')">Edit</button>';
     var row = '<tr>' +
         '<td>' + productdata.barcode + '</td>' +
         '<td>' + productdata.name + '</td>' +
@@ -139,13 +123,13 @@ function displayEditProduct(id) {
 }
 
 function displayProduct(data) {
-console.log(data);
+    console.log(data);
     $("#product-edit-form input[name=barcode]").val(data.barcode);
     $("#product-edit-form input[name=fbarcode]").val(data.barcode);
     $("#product-edit-form input[name=name]").val(data.name);
     $("#product-edit-form input[name=mrp]").val(data.mrp);
     $('#edit-product-modal').modal('toggle');
-//    $("#product-edit-form input[name=brand_category]").val(data.brand_category);
+    //    $("#product-edit-form input[name=brand_category]").val(data.brand_category);
     setEdit(data.brandCategory);
 }
 

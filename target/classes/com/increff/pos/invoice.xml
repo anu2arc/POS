@@ -50,7 +50,7 @@
                                 </fo:table-cell>
                             </fo:table-header>
                             <fo:table-body>
-                                <xsl:apply-templates select="orderItem"/>
+                                <xsl:apply-templates select="orderItems"/>
                             </fo:table-body>
                         </fo:table>
                     </fo:block>

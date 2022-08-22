@@ -20,7 +20,6 @@ public class OrderService {
         orderDao.insert(orderPojo);
         return orderPojo;
     }
-    //todo remove
     @Transactional
     public void delete(Integer id) {
         orderDao.delete(id);

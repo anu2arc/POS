@@ -72,20 +72,6 @@ function getInventory() {
 	});
 }
 
-function deleteInventory(id) {
-	var url = getBaseUrl() + "/" + id;
-
-	$.ajax({
-		url: url,
-		type: 'DELETE',
-		success: function (data) {
-			getInventory();     //...
-		},
-		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
-		}
-	});
-}
 
 //UI DISPLAY METHODS
 
@@ -116,8 +102,7 @@ function getProductData(iData) {
 function displayInventoryData(pData, iData) {
 	var button = 'type="button" class="btn btn-primary"';
 	var $tbody = $('#product-table').find('tbody');
-	var buttonHtml = '<button ' + button + ' onclick="deleteInventory(' + iData.id + ')">delete</button>'
-	buttonHtml += ' <button ' + button + ' onclick="displayEditInventory(\'' + pData.barcode + '\')">edit</button>'
+	var buttonHtml = ' <button ' + button + ' onclick="displayEditInventory(\'' + pData.barcode + '\')">Edit</button>';
 	var row = '<tr>'
 		+ '<td>' + pData.barcode + '</td>'
 		+ '<td>' + pData.name + '</td>'
