@@ -69,9 +69,6 @@ public class InventoryDto {
     public InventoryData getById(Integer id) throws ApiException {
         return DtoHelper.convert(inventoryService.get(id));
     }
-    public void delete(Integer id) {
-        inventoryService.delete(id);
-    }
     public InventoryData getByBarcode(String barcode) throws ApiException {
         return DtoHelper.convert(inventoryService.get(productService.getByBarcode(barcode).getId()));
     }

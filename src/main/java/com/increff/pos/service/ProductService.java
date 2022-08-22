@@ -38,12 +38,6 @@ public class ProductService {
         if(!errorLog.toString().isEmpty())
             throw new ApiException(errorLog.toString());
     }
-    // todo remove
-    @Transactional
-    public void delete(Integer id) {
-        productDao.delete(id);
-    }
-
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo get(Integer id) throws ApiException {
         try {

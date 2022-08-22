@@ -16,12 +16,6 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderDto orderDto;
-    // todo remove delete
-    @ApiOperation(value = "Deletes an order")
-    @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer orderId) {
-        orderDto.delete(orderId);
-    }
 
     @ApiOperation(value = "Gets an order by ID")
     @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.GET)

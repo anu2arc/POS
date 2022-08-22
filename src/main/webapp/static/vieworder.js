@@ -68,8 +68,7 @@ function viewOrder(id) {
 }
 
 function setData(id) {
-    // TODO:: Opens up a popup where you can see the order details
-    var url = $("meta[name=baseUrl]").attr("content") + "/api/orderitem/" + id;
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/order-item/" + id;
     $.ajax({
         url: url,
         type: 'GET',
@@ -160,7 +159,7 @@ function download(url) {
 }
 
 function invoice(id) {
-    var url = $("meta[name=baseUrl]").attr("content") + "/api/orderitem/invoice/" + id;
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/order-item/invoice/" + id;
     $.ajax({
         url: url,
         xhr: function () {

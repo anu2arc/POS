@@ -125,7 +125,7 @@ function refresh() {
 }
 
 function placeorder() {
-    var url = $("meta[name=baseUrl]").attr("content") + "/api/orderitem";
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/order-item";
     $.ajax({
         url: url,
         type: 'POST',

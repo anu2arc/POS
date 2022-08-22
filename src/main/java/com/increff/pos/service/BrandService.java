@@ -29,11 +29,6 @@ public class BrandService {
         if(!errorLog.toString().isEmpty())
             throw new ApiException(errorLog.toString());
     }
-    // TODO :: remove delete function
-    @Transactional
-    public void delete(Integer id) {
-        brandDao.delete(id);
-    }
     @Transactional
     public BrandPojo get(Integer id) throws ApiException {
         try{

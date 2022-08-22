@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -19,6 +18,10 @@ public class ProductDao {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    private TypedQuery<ProductPojo> getQuery(String jpql) {
+        return entityManager.createQuery(jpql, ProductPojo.class);
+    }
 
     @Transactional
     public ProductPojo insert(ProductPojo productPojo){
@@ -42,14 +45,4 @@ public class ProductDao {
         TypedQuery<ProductPojo> query = getQuery(SELECT_ALL);
         return query.getResultList();
     }
-
-    public Integer delete(Integer id) {
-        Query query = entityManager.createQuery(DELETE_ID);
-        query.setParameter("id", id);
-        return query.executeUpdate();
-    }
-    TypedQuery<ProductPojo> getQuery(String jpql) {
-        return entityManager.createQuery(jpql, ProductPojo.class);
-    }
-
 }

@@ -101,12 +101,8 @@ public class ProductDto {
     }
 
     public ProductData getByBarcode(String barcode) throws ApiException {
-        if(barcode.isEmpty())
+        if (barcode.isEmpty())
             throw new ApiException("Barcode cannot be empty");
         return DtoHelper.convert(service.getByBarcode(barcode));
-    }
-    //todo remove
-    public void delete(Integer id) {
-        service.delete(id);
     }
 }

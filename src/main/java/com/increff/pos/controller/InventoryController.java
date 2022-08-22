@@ -28,13 +28,6 @@ public class InventoryController {
     public void bulkAdd(@RequestBody List<InventoryForm> forms) throws Exception {
         inventoryDto.bulkAdd(forms);
     }
-    // todo remove delete
-
-    @ApiOperation(value = "Deletes inventory")
-    @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id) {
-        inventoryDto.delete(id);
-    }
 
     @ApiOperation(value = "Gets an inventory by ID")
     @RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)

@@ -1,6 +1,5 @@
 package com.increff.pos.model.Data;
 
-import com.increff.pos.model.Data.OrderItemData;
 import com.increff.pos.pojo.OrderItemPojo;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,7 @@ public class OrderItemDataList {
     private String time;
     private List<OrderItemPojo> orderItems;
 
-    public OrderItemDataList(List<OrderItemData> o, ZonedDateTime time, Double total, int orderId){
+    public OrderItemDataList(){
     }
     public OrderItemDataList(List<OrderItemPojo> orderItemPojoList, ZonedDateTime time, Double total, Integer orderId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy - HH:mm:ss z");

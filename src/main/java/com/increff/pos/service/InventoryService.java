@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Service
@@ -32,8 +31,6 @@ public class InventoryService {
             }
         }
     }
-    @Transactional
-    public void delete(Integer id) { inventoryDao.delete(id); }
     public InventoryPojo get(Integer id) throws ApiException {
         try{
             return inventoryDao.select(id);

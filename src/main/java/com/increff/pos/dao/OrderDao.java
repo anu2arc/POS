@@ -20,24 +20,23 @@ public class OrderDao {
 
     @PersistenceContext
     private EntityManager entityManager;
-
+    private TypedQuery<OrderPojo> getQuery(String jpql) {
+        return entityManager.createQuery(jpql, OrderPojo.class);
+    }
     @Transactional
     public OrderPojo insert(OrderPojo orderPojo) {
         entityManager.persist(orderPojo);
         return orderPojo;
     }
-
     public OrderPojo select(Integer id) {
         TypedQuery<OrderPojo> query = getQuery(SELECT_ID);
         query.setParameter("id", id);
         return query.getSingleResult();
     }
-
     public List<OrderPojo> selectAll() {
         TypedQuery<OrderPojo> query = getQuery(SELECT_ALL);
         return query.getResultList();
     }
-
     public Integer delete(Integer id) {
         Query query = entityManager.createQuery(DELETE_ID);
         query.setParameter("id", id);
@@ -49,9 +48,4 @@ public class OrderDao {
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
-    TypedQuery<OrderPojo> getQuery(String jpql) {
-        return entityManager.createQuery(jpql, OrderPojo.class);
-    }
-
-
 }

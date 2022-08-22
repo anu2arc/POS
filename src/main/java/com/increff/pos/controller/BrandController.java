@@ -21,32 +21,21 @@ public class BrandController {
     public String add(@RequestBody BrandForm form) throws Exception {
         return brandDto.add(form);
     }
-
     @ApiOperation(value = "Adds multiple brand and category pair")
     @RequestMapping(path = "/api/brand/bulk-add", method = RequestMethod.POST)
     public void bulkAdd(@RequestBody List<BrandForm> form) throws Exception {
         brandDto.bulkAdd(form);
     }
-
-    // todo remove delete
-    @ApiOperation(value = "Deletes")
-    @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id) {
-        brandDto.delete(id);
-    }
-
     @ApiOperation(value = "Gets an brand by ID")
     @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
     public BrandData get(@PathVariable Integer id) throws ApiException {
         return brandDto.getById(id);
     }
-
     @ApiOperation(value = "Gets list of all brands")
     @RequestMapping(path = "/api/brand", method = RequestMethod.GET)
     public List<BrandData> getAll() {
         return brandDto.getAll();
     }
-
     @ApiOperation(value = "Updates an brand")
     @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable Integer id, @RequestBody BrandForm brandForm) throws ApiException {

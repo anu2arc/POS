@@ -35,7 +35,7 @@ public class OrderItemController {
     }
     @ApiOperation(value = "Gets invoice for an orderID")
     @RequestMapping(path = "/api/order-item/invoice/{orderId}", method = RequestMethod.GET)
-    public HttpServletResponse getInvoice(@PathVariable Integer orderId) throws ApiException, IOException, TransformerException {
-        return service.getOrderInvoice(orderId);
+    public void getInvoice(HttpServletResponse response,@PathVariable Integer orderId) throws ApiException, IOException, TransformerException {
+        service.getOrderInvoice(response,orderId);
     }
 }

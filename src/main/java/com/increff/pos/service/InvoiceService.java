@@ -27,7 +27,7 @@ public class InvoiceService {
     private OrderItemService orderItemService;
     private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
     @Transactional(rollbackOn = ApiException.class)
-    public HttpServletResponse getOrderInvoice(int orderId) throws ApiException, IOException, TransformerException {
+    public void getOrderInvoice(HttpServletResponse response,int orderId) throws ApiException, IOException, TransformerException {
         List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderId);
         ZonedDateTime time = oService.get(orderId).getTime();
         double total = 0.;
@@ -41,7 +41,6 @@ public class InvoiceService {
         File xsltFile = new File("src", "main/resources/com/increff/pos/invoice.xml");
         File pdfFile = new File("src", invoice);
         convertToPDF(oItem, xsltFile, pdfFile, xml);
-        HttpServletResponse response = null;
         File file=new File("src/main/resources/Invoice/invoice"+orderId+".pdf");
         if (file.exists()) {
             response.setContentType("application/pdf");
@@ -50,7 +49,6 @@ public class InvoiceService {
             InputStream inputStream = new BufferedInputStream(Files.newInputStream(file.toPath()));
             FileCopyUtils.copy(inputStream, response.getOutputStream());
         }
-        return response;
     }
 
     private static String jaxbObjectToXML(OrderItemDataList orderItemList) {

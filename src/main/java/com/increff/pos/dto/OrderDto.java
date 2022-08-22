@@ -31,9 +31,6 @@ public class OrderDto {
     public OrderData getById(Integer id) throws ApiException {
         return DtoHelper.convert(orderService.get(id));
     }
-    public void delete(Integer id) {
-        orderService.delete(id);
-    }
 
     public List<OrderData> getByRange(OrderForm f) {
         List<OrderPojo> list= orderService.getByRange(f.getStartDate(),f.getEndDate());

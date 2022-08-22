@@ -1,8 +1,8 @@
 package com.increff.pos.service;
 
 import com.increff.pos.model.Data.InventoryReportData;
-import com.increff.pos.model.Form.ReportForm;
 import com.increff.pos.model.Data.SalesReportData;
+import com.increff.pos.model.Form.ReportForm;
 import com.increff.pos.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,11 +25,7 @@ public class ReportService {
     @Autowired
     private InventoryService inventoryService;
     @Transactional(rollbackOn = ApiException.class)
-    public List<SalesReportData> generate(ReportForm form) throws ApiException {
-
-        if((form.getStartDate().toString().equals("") || form.getEndDate().toString().equals("")))
-            throw new ApiException("please provide a valid input");
-
+    public List<SalesReportData> salesReport(ReportForm form) throws ApiException {
         List<OrderPojo> orderInDateRange=orderService.getByRange(form.getStartDate(),form.getEndDate());
         List<OrderItemPojo> orderItemList=new ArrayList<>();
         for(OrderPojo order:orderInDateRange){
@@ -65,7 +61,7 @@ public class ReportService {
         return list;
     }
 
-    public List<InventoryReportData> iReport() throws ApiException {
+    public List<InventoryReportData> inventoryReport() throws ApiException {
         List<InventoryReportData> report = new ArrayList<>();
         HashMap<String,HashMap<String, InventoryReportData>> holder = new HashMap<String, HashMap<String, InventoryReportData>>();
         List<InventoryPojo> ip=inventoryService.getAll();

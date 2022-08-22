@@ -29,12 +29,6 @@ public class ProductController {
     public void bulkAdd(@RequestBody List<ProductFrom> form) throws Exception {
         dto.bulkAdd(form);
     }
-    // todo remove delete
-    @ApiOperation(value = "Deletes product")
-    @RequestMapping(path = "/api/product/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id) {
-        dto.delete(id);
-    }
 
     @ApiOperation(value = "Gets an product by ID")
     @RequestMapping(path = "/api/product/{id}", method = RequestMethod.GET)
