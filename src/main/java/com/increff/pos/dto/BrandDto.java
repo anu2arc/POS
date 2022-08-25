@@ -17,17 +17,6 @@ public class BrandDto {
 
     @Autowired
     private BrandService brandService;
-
-    private void check(BrandForm form) throws ApiException {
-        BrandPojo brandPojo=null;
-        try{
-            brandPojo=brandService.checkPair(form.getBrand(),form.getCategory());
-        }
-        catch (Exception ignored){
-        }
-        if(brandPojo!=null)
-            throw new ApiException("Brand and Category pair already exist");
-    }
     public String add(BrandForm form) throws ApiException {
         BrandUtil.validate(form);
         check(form);
@@ -70,5 +59,15 @@ public class BrandDto {
 
     public BrandData getById(Integer id) throws ApiException {
         return DtoHelper.convert(brandService.get(id));
+    }
+    private void check(BrandForm form) throws ApiException {
+        BrandPojo brandPojo=null;
+        try{
+            brandPojo=brandService.checkPair(form.getBrand(),form.getCategory());
+        }
+        catch (Exception ignored){
+        }
+        if(brandPojo!=null)
+            throw new ApiException("Brand and Category pair already exist");
     }
 }

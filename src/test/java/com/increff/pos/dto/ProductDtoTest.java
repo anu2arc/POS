@@ -3,7 +3,7 @@ package com.increff.pos.dto;
 import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.model.Data.ProductData;
 import com.increff.pos.model.Form.BrandForm;
-import com.increff.pos.model.Form.ProductFrom;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.service.ApiException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +19,11 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Autowired
     private BrandDto brandDto;
 
-    private ProductFrom createProduct(){
+    private ProductForm createProduct(){
         return createProduct("nike","shoes","airmax",1000.0,"b1");
     }
-    private ProductFrom createProduct(String brand,String category,String name,double mrp,String barcode){
-        ProductFrom productForm=new ProductFrom();
+    private ProductForm createProduct(String brand, String category, String name, double mrp, String barcode){
+        ProductForm productForm=new ProductForm();
         productForm.setBrand(brand);
         productForm.setCategory(category);
         productForm.setName(name);
@@ -73,7 +73,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testBulkAdd() throws Exception {
         brandDto.add(createBrand());
-        List<ProductFrom> productFromList=new ArrayList<>();
+        List<ProductForm> productFromList=new ArrayList<>();
         productFromList.add(createProduct());
         productFromList.add((createProduct("nike","shoes","jordan",2000.0,"b2")));
         productDto.bulkAdd(productFromList);
@@ -82,7 +82,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testBulkAdd1() throws Exception {
         brandDto.add(createBrand());
-        List<ProductFrom> productFromList=new ArrayList<>();
+        List<ProductForm> productFromList=new ArrayList<>();
         productFromList.add(createProduct());
         productFromList.add((createProduct("nike","shoes","jordan",2000.0,"b1")));
         try{
@@ -95,7 +95,7 @@ public class ProductDtoTest extends AbstractUnitTest {
 
     @Test
     public void testBulkAdd2() throws Exception {
-        List<ProductFrom> productFromList=new ArrayList<>();
+        List<ProductForm> productFromList=new ArrayList<>();
         productFromList.add(createProduct());
         try{
             productDto.bulkAdd(productFromList);
@@ -109,7 +109,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     public void testBulkAdd3() throws Exception {
         brandDto.add(createBrand());
         productDto.add(createProduct());
-        List<ProductFrom> productFromList=new ArrayList<>();
+        List<ProductForm> productFromList=new ArrayList<>();
         productFromList.add((createProduct("nike","shoes","jordan",2000.0,"b1")));
         try{
             productDto.bulkAdd(productFromList);
@@ -122,7 +122,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testGetAll() throws ApiException {
         brandDto.add(createBrand());
-        List<ProductFrom> productFromList=new ArrayList<>();
+        List<ProductForm> productFromList=new ArrayList<>();
         productFromList.add(createProduct());
         productFromList.add((createProduct("nike","shoes","jordan",2000.0,"b2")));
         productDto.bulkAdd(productFromList);
@@ -141,7 +141,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testGet() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom productFrom=createProduct();
+        ProductForm productFrom=createProduct();
         productDto.add(productFrom);
         ProductData data=productDto.getAll().get(0);
         ProductData productData=productDto.getById(data.getId());
@@ -154,7 +154,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testGetByBarcode() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom productFrom=createProduct();
+        ProductForm productFrom=createProduct();
         productDto.add(productFrom);
         ProductData productData=productDto.getByBarcode(productFrom.getBarcode());
 
@@ -176,7 +176,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testUpdate() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom productFrom=createProduct();
+        ProductForm productFrom=createProduct();
         productDto.add(productFrom);
         productFrom.setName("newShoes");
         productDto.update(productFrom.getBarcode(),productFrom);
@@ -187,7 +187,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testUpdate1() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom productFrom=createProduct();
+        ProductForm productFrom=createProduct();
         productDto.add(productFrom);
         productFrom.setBrand("alpha");
         try{

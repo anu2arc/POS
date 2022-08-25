@@ -18,6 +18,8 @@ public class OrderItemDataList {
     private String time;
     private List<OrderItemPojo> orderItems;
 
+    private String invoiceTime;
+
     public OrderItemDataList(){
     }
     public OrderItemDataList(List<OrderItemPojo> orderItemPojoList, ZonedDateTime time, Double total, Integer orderId) {
@@ -25,6 +27,8 @@ public class OrderItemDataList {
         this.time=time.format(formatter);
         this.total=total;
         this.orderId=orderId;
+        this.invoiceTime=ZonedDateTime.now().format(formatter);
         orderItems =orderItemPojoList;
+
     }
 }

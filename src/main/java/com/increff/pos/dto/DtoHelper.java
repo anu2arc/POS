@@ -4,7 +4,7 @@ import com.increff.pos.model.Data.*;
 import com.increff.pos.model.Form.BrandForm;
 import com.increff.pos.model.Form.InventoryForm;
 import com.increff.pos.model.Form.OrderItemForm;
-import com.increff.pos.model.Form.ProductFrom;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.pojo.*;
 import org.springframework.stereotype.Repository;
 
@@ -66,7 +66,7 @@ public class DtoHelper {
         d.setMrp(p.getMrp());
         return d;
     }
-    public static ProductPojo convert(ProductFrom f) {
+    public static ProductPojo convert(ProductForm f) {
         ProductPojo p = new ProductPojo();
         p.setName(f.getName());
         p.setBarcode(f.getBarcode());

@@ -2,7 +2,7 @@ package com.increff.pos.dto;
 
 import com.increff.pos.Util.ProductUtil;
 import com.increff.pos.model.Data.ProductData;
-import com.increff.pos.model.Form.ProductFrom;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -23,7 +23,7 @@ public class ProductDto {
     private ProductUtil productUtil;
     @Autowired
     private BrandService brandService;
-    private void check(ProductFrom form) throws ApiException {
+    private void check(ProductForm form) throws ApiException {
         ProductPojo productPojo=null;
         try{
             productPojo=service.getByBarcode(form.getBarcode());
@@ -33,52 +33,48 @@ public class ProductDto {
         if(productPojo!=null)
             throw new ApiException("Barcode already exist");
     }
-    public String add(ProductFrom productFrom) throws Exception {
-        productUtil.validate(productFrom);
-        check(productFrom);
-        ProductPojo p= DtoHelper.convert(productFrom);
-        try{
-            BrandPojo brandPojo=brandService.checkPair(productFrom.getBrand(),productFrom.getCategory());
-            p.setBrandCategory(brandPojo.getId());
-        }
-        catch (Exception e){
-            throw new ApiException("please provide a valid brand category pair");
-        }
-        service.add(p);
+    public String add(ProductForm productForm) throws Exception {
+        productUtil.validate(productForm);
+        check(productForm);
+        ProductPojo pojo= DtoHelper.convert(productForm);
+        BrandPojo brandPojo=brandService.checkPair(productForm.getBrand(),productForm.getCategory());
+        pojo.setBrandCategory(brandPojo.getId());
+        service.add(pojo);
         return "Product added successfully";
     }
 
-    public void bulkAdd(List<ProductFrom> productFromList) throws ApiException {
+    public void bulkAdd(List<ProductForm> productFormList) throws ApiException {
         StringBuilder errorLog=new StringBuilder();
         List<ProductPojo> list=new ArrayList<>();
-        for(int i = 0; i<productFromList.size(); i++){
+        for(int i = 0; i<productFormList.size(); i++){
             ProductPojo productPojo=new ProductPojo();
             try {
-                productUtil.validate(productFromList.get(i));
-                check(productFromList.get(i));
-                productPojo= DtoHelper.convert(productFromList.get(i));
+                productUtil.validate(productFormList.get(i));
+                check(productFormList.get(i));
+                productPojo= DtoHelper.convert(productFormList.get(i));
             } catch (ApiException e) {
                 errorLog.append(i + 1).append(": ").append(e.getMessage()).append("\n");
-            }
+            }// todo
             try{
-                BrandPojo brandPojo=brandService.checkPair(productFromList.get(i).getBrand(),productFromList.get(i).getCategory());
+                BrandPojo brandPojo=brandService.checkPair(productFormList.get(i).getBrand(),productFormList.get(i).getCategory());
                 productPojo.setBrandCategory(brandPojo.getId());
                 list.add(productPojo);
             }
             catch (Exception e){
-                errorLog.append(i + 1).append(": please provide a valid brand category pair");
+                errorLog.append(i + 1).append(": please provide a valid brand category pair"); // todo change error message
             }
         }
         if(errorLog.length()>0)
             throw new ApiException(errorLog.toString());
+        // todo make a set and check for barcode here only
         service.bulkAdd(list);
     }
 
-    public void update(String barcode, ProductFrom productFrom) throws ApiException {
-        productUtil.validate(productFrom);
-        ProductPojo productPojo=DtoHelper.convert(productFrom);
+    public void update(String barcode, ProductForm productForm) throws ApiException {
+        productUtil.validate(productForm);
+        ProductPojo productPojo=DtoHelper.convert(productForm);
         try{
-            BrandPojo brandPojo=brandService.checkPair(productFrom.getBrand(),productFrom.getCategory());
+            BrandPojo brandPojo=brandService.checkPair(productForm.getBrand(),productForm.getCategory());
             productPojo.setBrandCategory(brandPojo.getId());
         }
         catch (Exception exception){

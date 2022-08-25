@@ -18,10 +18,27 @@
                     <fo:block font-size="25pt" text-align="center" font-family="Helvetica" font-weight="bold" space-after="2mm">
                         Invoice
                     </fo:block>
-                    <fo:block font-size="12pt" text-align="center" font-family="Helvetica" font-weight="bold" space-after="5mm">
-                        Ordered on - <xsl:value-of select="time"/>
+                    <fo:block>
+                        <fo:table>
+                            <fo:table-column column-width="10cm"/>
+                            <fo:table-column column-width="10cm"/>
+                            <fo:table-body>
+                                <fo:table-row>
+                                    <fo:table-cell>
+                                        <fo:block font-size="12pt" text-align="left" font-weight="bold">
+                                            Order Time - <xsl:value-of select="time"/>
+                                        </fo:block>
+                                    </fo:table-cell>
+                                    <fo:table-cell>
+                                        <fo:block font-size="12pt" text-align="right" font-weight="bold">
+                                            Invoice Time - <xsl:value-of select="invoiceTime"/>
+                                        </fo:block>
+                                    </fo:table-cell>
+                                </fo:table-row>
+                            </fo:table-body>
+                        </fo:table>
                     </fo:block>
-                    <fo:block font-size="12pt" text-align="center" font-family="Helvetica" font-weight="bold" space-after="5mm">
+                    <fo:block font-size="12pt" text-align="center" font-family="Helvetica" font-weight="bold" space-after="5mm" padding-top="2%">
                         Order Id-<xsl:value-of select="orderId"/>
                     </fo:block>
                     <fo:block font-size="10pt">

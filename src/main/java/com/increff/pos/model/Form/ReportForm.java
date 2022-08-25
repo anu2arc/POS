@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 public class ReportForm {
-    ZonedDateTime startDate;
+    ZonedDateTime startDate;//todo remove setter
     ZonedDateTime endDate;
     String brand;
     String category;

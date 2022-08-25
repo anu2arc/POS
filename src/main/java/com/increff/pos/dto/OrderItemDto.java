@@ -1,5 +1,4 @@
 package com.increff.pos.dto;
-
 import com.increff.pos.Util.OrderItemUtil;
 import com.increff.pos.model.Data.OrderItemData;
 import com.increff.pos.model.Form.OrderItemForm;
@@ -10,7 +9,6 @@ import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,30 +27,31 @@ public class OrderItemDto {
     private InventoryService inventoryService;
 
     private void check(OrderItemForm orderItem) throws ApiException {
-        ProductPojo pp=null;
+        ProductPojo productPojo=null;
         try{
-            pp=productService.getByBarcode(orderItem.getBarcode());
+            productPojo=productService.getByBarcode(orderItem.getBarcode());
         }
         catch (ApiException apiException){
             throw new ApiException("Invalid barcode :"+orderItem.getBarcode());
         }
-        InventoryPojo ip=inventoryService.get(pp.getId());
-        if(ip.getQuantity()< orderItem.getQuantity())
-            throw new ApiException("Max Quantity for product "+orderItem.getBarcode()+" is :"+ip.getQuantity());
-        if(orderItem.getSellingprice()> pp.getMrp())
+        InventoryPojo inventoryPojo=inventoryService.get(productPojo.getId());
+        if(inventoryPojo.getQuantity()< orderItem.getQuantity())
+            throw new ApiException("Max Quantity for product "+orderItem.getBarcode()+" is :"+inventoryPojo.getQuantity());
+        if(orderItem.getSellingprice()> productPojo.getMrp())
             throw new ApiException("Selling price cannot be more than MRP for Product :"+orderItem.getBarcode());
     }
     public String add(List<OrderItemForm> orderItemForms) throws ApiException {
         StringBuilder response=new StringBuilder();
-        HashMap<String,OrderItemPojo> list=new HashMap<>();
+        HashMap<String,OrderItemPojo> list=new HashMap<>(); // todo use set
         OrderPojo orderPojo=orderService.add();
-        for(int i = 0; i<orderItemForms.size(); i++) {
-            OrderItemForm orderItem=orderItemForms.get(i);
+        int rowNo=0;
+        for(OrderItemForm orderItem:orderItemForms) {
+            rowNo++;
             try{
                 orderItemUtil.validate(orderItem);
                 check(orderItem);
                 if(list.containsKey(orderItem.getBarcode()))
-                    throw new ApiException((i+1)+": Duplicate Product Present");
+                    throw new ApiException((rowNo)+": Duplicate Product Present");// todo change message
                 else{
                     Integer pid=productService.getByBarcode(orderItem.getBarcode()).getId();
                     list.put(orderItem.getBarcode(), DtoHelper.convert(orderItem,orderPojo.getId(),pid));

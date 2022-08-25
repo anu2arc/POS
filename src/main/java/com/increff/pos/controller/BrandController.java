@@ -13,31 +13,32 @@ import java.util.List;
 
 @Api
 @RestController
+@RequestMapping("/api/brand")
 public class BrandController {
     @Autowired
     private BrandDto brandDto;
     @ApiOperation(value = "Adds a brand and category")
-    @RequestMapping(path = "/api/brand", method = RequestMethod.POST)
+    @RequestMapping(path = "", method = RequestMethod.POST)
     public String add(@RequestBody BrandForm form) throws Exception {
         return brandDto.add(form);
     }
     @ApiOperation(value = "Adds multiple brand and category pair")
-    @RequestMapping(path = "/api/brand/bulk-add", method = RequestMethod.POST)
+    @RequestMapping(path = "/bulk-add", method = RequestMethod.POST)
     public void bulkAdd(@RequestBody List<BrandForm> form) throws Exception {
         brandDto.bulkAdd(form);
     }
     @ApiOperation(value = "Gets an brand by ID")
-    @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
+    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
     public BrandData get(@PathVariable Integer id) throws ApiException {
         return brandDto.getById(id);
     }
     @ApiOperation(value = "Gets list of all brands")
-    @RequestMapping(path = "/api/brand", method = RequestMethod.GET)
+    @RequestMapping(path = "", method = RequestMethod.GET)
     public List<BrandData> getAll() {
         return brandDto.getAll();
     }
     @ApiOperation(value = "Updates an brand")
-    @RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable Integer id, @RequestBody BrandForm brandForm) throws ApiException {
         brandDto.update(id, brandForm);
     }

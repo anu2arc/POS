@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 public class InventoryUtil {
     public void validate(InventoryForm form) throws ApiException {
         if(form.getQuantity()==null)
-            throw new ApiException("Please specify the quantity");
+            throw new ApiException("Quantity cannot be Null");
         if(form.getQuantity()<0)
             throw new ApiException("Quantity cannot be negative");
         if(form.getQuantity()>1000000)

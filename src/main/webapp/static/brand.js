@@ -22,7 +22,8 @@ function addBrandCategory(event) {
 			getBrandList();     //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			console.log(response);
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 
@@ -52,7 +53,7 @@ function updateBrandCategory(event) {
 			getBrandList();     //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 	return false;
@@ -68,7 +69,7 @@ function getBrandList() {
 			displayBrandList(data);     //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 }
@@ -103,7 +104,7 @@ function displayEditBrand(id) {
 			displayBrand(data);     //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 }

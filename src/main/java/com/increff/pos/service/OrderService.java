@@ -34,7 +34,6 @@ public class OrderService {
             throw new ApiException("Order with given ID does not exit, id: " + id);
         }
     }
-
     @Transactional
     public List<OrderPojo> getAll() {
         return orderDao.selectAll();

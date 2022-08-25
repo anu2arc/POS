@@ -24,7 +24,7 @@ function setpage() {
             displayOrderList(data);     //...
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }
@@ -44,6 +44,10 @@ function displayOrderList(data) {
             + '</tr>';
         $tbody.append(row);
     }
+    var date = new Date();
+    document.getElementById('enddate').valueAsDate = date;
+    date.setMonth(date.getMonth() - 1);
+    document.getElementById('startdate').valueAsDate = date;
 }
 
 function viewOrder(id) {
@@ -76,7 +80,7 @@ function setData(id) {
             viewOrderDetails(data);
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }
@@ -91,7 +95,7 @@ function viewOrderDetails(oData) {
                 displaySelectedOrder(oData, pData, i); //...
             },
             error: function (response) {
-                $.notify(response['responseJSON']['description'], { autoHide: false });
+                $.notify(response['responseJSON']['message'], { autoHide: false });
             }
         });
     }
@@ -142,7 +146,7 @@ function showForDateRange(json) {
             displayOrderList(response);
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }

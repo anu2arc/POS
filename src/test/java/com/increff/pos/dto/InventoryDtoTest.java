@@ -4,7 +4,7 @@ import com.increff.pos.AbstractUnitTest;
 import com.increff.pos.model.Data.InventoryData;
 import com.increff.pos.model.Form.BrandForm;
 import com.increff.pos.model.Form.InventoryForm;
-import com.increff.pos.model.Form.ProductFrom;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.service.ApiException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +32,11 @@ public class InventoryDtoTest extends AbstractUnitTest {
         brandForm.setCategory(category);
         return brandForm;
     }
-    private ProductFrom createProduct(){
+    private ProductForm createProduct(){
         return createProduct("nike","shoes","airmax",1000.0,"test1");
     }
-    private ProductFrom createProduct(String brand,String category,String name,double mrp,String barcode){
-        ProductFrom productForm=new ProductFrom();
+    private ProductForm createProduct(String brand, String category, String name, double mrp, String barcode){
+        ProductForm productForm=new ProductForm();
         productForm.setBrand(brand);
         productForm.setCategory(category);
         productForm.setName(name);

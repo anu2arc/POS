@@ -1,6 +1,6 @@
 package com.increff.pos.Util;
 
-import com.increff.pos.model.Form.ProductFrom;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.service.ApiException;
 import org.springframework.stereotype.Repository;
 
@@ -11,34 +11,34 @@ import java.util.Objects;
 public class ProductUtil {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
-    public void validate(ProductFrom from) throws ApiException {
-        if(Objects.isNull(from.getBarcode()) || Objects.equals(from.getBarcode(), ""))
+    public void validate(ProductForm form) throws ApiException {
+        if(Objects.isNull(form.getBarcode()) || form.getBarcode().equals(""))
             throw new ApiException("Barcode cannot be empty");
-        if(from.getBarcode().length()>20)
+        if(form.getBarcode().length()>20)
             throw new ApiException("Barcode length is too long");
-        if(from.getBrand().equals(""))
-            throw new ApiException("please provide a brand");
-        if(from.getCategory().equals(""))
-            throw new ApiException("please provide a category");
-        if(Objects.isNull(from.getName()) || Objects.equals(from.getName(), ""))
+        if(Objects.isNull(form.getBrand()) ||form.getBrand().equals(""))
+            throw new ApiException("Brand cannot be empty");
+        if(Objects.isNull(form.getCategory()) ||form.getCategory().equals(""))
+            throw new ApiException("Category cannot be empty");
+        if(Objects.isNull(form.getName()) || Objects.equals(form.getName(), ""))
             throw new ApiException("Product Name cannot be empty");
-        if(from.getName().length()>20)
+        if(form.getName().length()>20)
             throw new ApiException("Name length is too long");
-        if(from.getMrp()==null)
+        if(form.getMrp()==null)
             throw new ApiException("MRP cannot be empty");
-        if(from.getMrp().isNaN())
-            throw new ApiException("Please provide a valid mrp");
-        if(from.getMrp()==0)
+        if(form.getMrp().isNaN())
+            throw new ApiException("Invalid MRP");
+        if(form.getMrp()==0)
             throw new ApiException("MRP cannot be zero");
-        if(from.getMrp()<0)
+        if(form.getMrp()<0)
             throw new ApiException("MRP cannot be negative value");
-        if(from.getMrp()>1000000)
+        if(form.getMrp()>1000000)
             throw new ApiException("MRP value exceeded the max limit");
-        normalize(from);
+        normalize(form);
     }
-    protected static void normalize(ProductFrom from) {
-        from.setBarcode(from.getBarcode().toLowerCase().trim());
-        from.setName((from.getName().toLowerCase().trim()));
-        from.setMrp(Double.valueOf(DECIMAL_FORMAT.format(from.getMrp())));
+    protected static void normalize(ProductForm productFrom) {
+        productFrom.setBarcode(productFrom.getBarcode().toLowerCase().trim());
+        productFrom.setName((productFrom.getName().toLowerCase().trim()));
+        productFrom.setMrp(Double.valueOf(DECIMAL_FORMAT.format(productFrom.getMrp())));
     }
 }

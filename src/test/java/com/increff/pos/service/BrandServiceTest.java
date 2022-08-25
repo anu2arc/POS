@@ -98,7 +98,7 @@ public class BrandServiceTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testCheckPair(){
+    public void testCheckPair() throws ApiException {
         BrandPojo brandPojo=createBrand();
         brandService.add(brandPojo);
         assertEquals(brandPojo.getId(),brandService.checkPair(brandPojo.getBrand(), brandPojo.getCategory()).getId());

@@ -48,7 +48,12 @@ public class BrandService {
         pojo.setBrand(brandPojo.getBrand());
         pojo.setCategory(brandPojo.getCategory());
     }
-    public BrandPojo checkPair(String brand,String Category){
-        return brandDao.setIsPresent(brand, Category);
+    public BrandPojo checkPair(String brand,String Category) throws ApiException {
+        try{
+            return brandDao.setIsPresent(brand, Category);
+        }
+        catch (Exception exception){
+            throw new ApiException("Invalid Brand Category pair");
+        }
     }
 }

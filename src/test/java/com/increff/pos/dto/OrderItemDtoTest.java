@@ -5,11 +5,9 @@ import com.increff.pos.model.Data.OrderItemData;
 import com.increff.pos.model.Form.BrandForm;
 import com.increff.pos.model.Form.InventoryForm;
 import com.increff.pos.model.Form.OrderItemForm;
-import com.increff.pos.model.Form.ProductFrom;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.service.ApiException;
-import io.swagger.annotations.Api;
 import org.junit.Test;
-import org.omg.CORBA.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -38,11 +36,11 @@ public class OrderItemDtoTest extends AbstractUnitTest {
         brandForm.setCategory(category);
         return brandForm;
     }
-    private ProductFrom createProduct(){
+    private ProductForm createProduct(){
         return createProduct("nike","shoes","airmax",1000.0,"test1");
     }
-    private ProductFrom createProduct(String brand,String category,String name,double mrp,String barcode){
-        ProductFrom productForm=new ProductFrom();
+    private ProductForm createProduct(String brand, String category, String name, double mrp, String barcode){
+        ProductForm productForm=new ProductForm();
         productForm.setBrand(brand);
         productForm.setCategory(category);
         productForm.setName(name);
@@ -73,8 +71,8 @@ public class OrderItemDtoTest extends AbstractUnitTest {
     @Test
     public void testAdd() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom product1=createProduct();
-        ProductFrom product2=createProduct("nike","shoes","jordan",2000.0,"test2");
+        ProductForm product1=createProduct();
+        ProductForm product2=createProduct("nike","shoes","jordan",2000.0,"test2");
         productDto.add(product1);
         productDto.add(product2);
         inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
@@ -90,8 +88,8 @@ public class OrderItemDtoTest extends AbstractUnitTest {
     @Test
     public void testAdd1() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom product1=createProduct();
-        ProductFrom product2=createProduct("nike","shoes","jordan",2000.0,"test2");
+        ProductForm product1=createProduct();
+        ProductForm product2=createProduct("nike","shoes","jordan",2000.0,"test2");
         productDto.add(product1);
         productDto.add(product2);
         inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
@@ -112,8 +110,8 @@ public class OrderItemDtoTest extends AbstractUnitTest {
     @Test
     public void testAdd2() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom product1=createProduct();
-        ProductFrom product2=createProduct("nike","shoes","jordan",2000.0,"test2");
+        ProductForm product1=createProduct();
+        ProductForm product2=createProduct("nike","shoes","jordan",2000.0,"test2");
         productDto.add(product1);
         productDto.add(product2);
         inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
@@ -134,8 +132,8 @@ public class OrderItemDtoTest extends AbstractUnitTest {
     @Test
     public void testAdd3() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom product1=createProduct();
-        ProductFrom product2=createProduct("nike","shoes","jordan",2000.0,"test2");
+        ProductForm product1=createProduct();
+        ProductForm product2=createProduct("nike","shoes","jordan",2000.0,"test2");
         productDto.add(product1);
         productDto.add(product2);
         inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
@@ -156,8 +154,8 @@ public class OrderItemDtoTest extends AbstractUnitTest {
     @Test
     public void testAdd4() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom product1=createProduct();
-        ProductFrom product2=createProduct("nike","shoes","jordan",2000.0,"test2");
+        ProductForm product1=createProduct();
+        ProductForm product2=createProduct("nike","shoes","jordan",2000.0,"test2");
         productDto.add(product1);
         productDto.add(product2);
         inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
@@ -178,8 +176,8 @@ public class OrderItemDtoTest extends AbstractUnitTest {
     @Test
     public void testGetOrder() throws Exception {
         brandDto.add(createBrand());
-        ProductFrom product1=createProduct();
-        ProductFrom product2=createProduct("nike","shoes","jordan",2000.0,"test2");
+        ProductForm product1=createProduct();
+        ProductForm product2=createProduct("nike","shoes","jordan",2000.0,"test2");
         productDto.add(product1);
         productDto.add(product2);
         inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());

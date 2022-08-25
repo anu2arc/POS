@@ -22,7 +22,7 @@ function addProduct(event) {
         },
         error: function (response) {
             console.log(json);
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }
@@ -46,7 +46,7 @@ function updateProduct(event) {
             getProductList(); //...
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
     return false;
@@ -103,7 +103,7 @@ function getBrandCategory(productdata) {
             createtable(productdata, branddata);
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }
@@ -117,7 +117,7 @@ function displayEditProduct(id) {
             displayProduct(data);
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }
@@ -143,7 +143,7 @@ function setEdit(id) {
             setEditOptions(branddata);
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 }
@@ -219,7 +219,7 @@ function uploadRows() {
             updateUploadDialog();
         },
         error: function (response) {
-            var json = { description: response.responseJSON.description };
+            var json = { message: response.responseJSON.message };
             errorData.push(json);
             processCount = fileData.length;
             $.notify("error please download error report", { autoHide: false });

@@ -30,7 +30,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     public void testAdd() throws Exception {
         brandDto.add(createBrand());
     }
-
+//todo use annotations
     @Test
     public void testAdd2() throws Exception {
         brandDto.add(createBrand());

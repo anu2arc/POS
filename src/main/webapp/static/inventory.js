@@ -24,7 +24,7 @@ function addWithBarcode(barcode, json) {
 			addInventoryData(productData.id, json)
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 }
@@ -44,7 +44,7 @@ function addInventoryData(id, json) {
 			getInventory();     //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 	return false;
@@ -67,7 +67,7 @@ function getInventory() {
 			displayInventory(data);     //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 }
@@ -94,7 +94,7 @@ function getProductData(iData) {
 			displayInventoryData(pData, iData); //...
 		},
 		error: function (response) {
-			$.notify(response['responseJSON']['description'], { autoHide: false });
+			$.notify(response['responseJSON']['message'], { autoHide: false });
 		}
 	});
 }
@@ -193,7 +193,7 @@ function uploadRows() {
 			updateUploadDialog();
 		},
 		error: function (response) {
-			var json = { description: response.responseJSON.description };
+			var json = { message: response.responseJSON.message };
 			errorData.push(json);
 			processCount = fileData.length;
 			$.notify("error please download error report", { autoHide: false });

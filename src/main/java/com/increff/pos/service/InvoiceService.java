@@ -22,25 +22,24 @@ import java.util.List;
 @Service
 public class InvoiceService {
     @Autowired
-    private OrderService oService;
+    private OrderService orderService;
     @Autowired
     private OrderItemService orderItemService;
     private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
     @Transactional(rollbackOn = ApiException.class)
     public void getOrderInvoice(HttpServletResponse response,int orderId) throws ApiException, IOException, TransformerException {
         List<OrderItemPojo> orderItemPojoList = orderItemService.getOrder(orderId);
-        ZonedDateTime time = oService.get(orderId).getTime();
-        double total = 0.;
-
+        ZonedDateTime time = orderService.get(orderId).getTime();
+        double totalSellingAmount = 0.0;
         for (OrderItemPojo itemPojo : orderItemPojoList) {
-            total += itemPojo.getQuantity() * itemPojo.getSellingPrice();
+            totalSellingAmount += itemPojo.getQuantity() * itemPojo.getSellingPrice();
         }
-        OrderItemDataList oItem = new OrderItemDataList(orderItemPojoList, time, total, orderId);
+        OrderItemDataList orderItemDataList = new OrderItemDataList(orderItemPojoList, time, totalSellingAmount, orderId);
         String invoice="main/resources/Invoice/invoice"+orderId+".pdf";
-        String xml = jaxbObjectToXML(oItem);
+        String xml = javaObjectToXml(orderItemDataList);
         File xsltFile = new File("src", "main/resources/com/increff/pos/invoice.xml");
         File pdfFile = new File("src", invoice);
-        convertToPDF(oItem, xsltFile, pdfFile, xml);
+        convertToPDF(orderItemDataList, xsltFile, pdfFile, xml);
         File file=new File("src/main/resources/Invoice/invoice"+orderId+".pdf");
         if (file.exists()) {
             response.setContentType("application/pdf");
@@ -50,8 +49,7 @@ public class InvoiceService {
             FileCopyUtils.copy(inputStream, response.getOutputStream());
         }
     }
-
-    private static String jaxbObjectToXML(OrderItemDataList orderItemList) {
+    private static String javaObjectToXml(OrderItemDataList orderItemList) {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(OrderItemDataList.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -67,7 +65,6 @@ public class InvoiceService {
     }
     private void convertToPDF(OrderItemDataList team, File xslt, File pdf, String xml)
             throws IOException, TransformerException {
-
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
         OutputStream out = Files.newOutputStream(pdf.toPath());
         out = new java.io.BufferedOutputStream(out);
