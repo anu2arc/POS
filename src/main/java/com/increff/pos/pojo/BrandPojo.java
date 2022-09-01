@@ -19,6 +19,3 @@ public class BrandPojo {
     @Column(nullable = false)
     private String category;
 }
-
-//TODO :: Generation type change karna hai optimistic locking
-//

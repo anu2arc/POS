@@ -18,59 +18,16 @@ public class OrderItemDto {
     @Autowired
     private OrderItemService orderItemService;
     @Autowired
-    private OrderItemUtil orderItemUtil;
-    @Autowired
     private ProductService productService;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
-    private InventoryService inventoryService;
 
-    private void check(OrderItemForm orderItem) throws ApiException {
-        ProductPojo productPojo=null;
-        try{
-            productPojo=productService.getByBarcode(orderItem.getBarcode());
+    public String add(List<OrderItemForm> orderItemForms,int orderId) throws ApiException {
+        List<OrderItemPojo> orderItemPojos=new ArrayList<>();
+        for(OrderItemForm itemForm:orderItemForms){
+            ProductPojo productPojo=productService.getByBarcode(itemForm.getBarcode());
+            orderItemPojos.add(DtoHelper.convert(itemForm,orderId,productPojo.getId()));
         }
-        catch (ApiException apiException){
-            throw new ApiException("Invalid barcode :"+orderItem.getBarcode());
-        }
-        InventoryPojo inventoryPojo=inventoryService.get(productPojo.getId());
-        if(inventoryPojo.getQuantity()< orderItem.getQuantity())
-            throw new ApiException("Max Quantity for product "+orderItem.getBarcode()+" is :"+inventoryPojo.getQuantity());
-        if(orderItem.getSellingprice()> productPojo.getMrp())
-            throw new ApiException("Selling price cannot be more than MRP for Product :"+orderItem.getBarcode());
-    }
-    public String add(List<OrderItemForm> orderItemForms) throws ApiException {
-        StringBuilder response=new StringBuilder();
-        HashMap<String,OrderItemPojo> list=new HashMap<>(); // todo use set
-        OrderPojo orderPojo=orderService.add();
-        int rowNo=0;
-        for(OrderItemForm orderItem:orderItemForms) {
-            rowNo++;
-            try{
-                orderItemUtil.validate(orderItem);
-                check(orderItem);
-                if(list.containsKey(orderItem.getBarcode()))
-                    throw new ApiException((rowNo)+": Duplicate Product Present");// todo change message
-                else{
-                    Integer pid=productService.getByBarcode(orderItem.getBarcode()).getId();
-                    list.put(orderItem.getBarcode(), DtoHelper.convert(orderItem,orderPojo.getId(),pid));
-                }
-            }
-            catch (ApiException apiException){
-                response.append(apiException.getMessage()).append("\n");
-            }
-        }
-        if(response.toString().isEmpty()) {
-            List<OrderItemPojo> orderItemPojoList = new ArrayList<>(list.values());
-            orderItemService.add(orderItemPojoList);
-            response.append("Order placed Successfully with orderId :").append(orderPojo.getId());
-            return response.toString();
-        }
-        else {
-            orderService.delete(orderPojo.getId());
-            throw new ApiException(response.toString());
-        }
+        orderItemService.add(orderItemPojos);
+        return "Order placed with ID: "+orderId;
     }
     public List<OrderItemData> getOrder(Integer orderId) {
         List<OrderItemPojo> list=orderItemService.getOrder(orderId);

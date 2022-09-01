@@ -36,7 +36,7 @@ public class InventoryService {
             return inventoryDao.select(id);
         }
         catch (Exception exception){
-            throw new ApiException("Inventory with given ID does not exit, id: " + id);
+            throw new ApiException("Inventory with given ID does not exist, id: " + id);
         }
     }
     @Transactional

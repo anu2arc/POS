@@ -72,7 +72,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
             inventoryService.get(0);
         }
         catch(ApiException exception){
-            assertEquals("Inventory with given ID does not exit, id: 0",exception.getMessage().trim());
+            assertEquals("Inventory with given ID does not exist, id: 0",exception.getMessage().trim());
         }
     }
 

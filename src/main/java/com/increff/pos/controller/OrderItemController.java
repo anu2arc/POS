@@ -22,21 +22,10 @@ import java.util.List;
 public class OrderItemController {
     @Autowired
     private OrderItemDto orderItemDto;
-    @Autowired
-    private InvoiceService service;
-    @ApiOperation(value = "place order")
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public String add(@RequestBody List<OrderItemForm> form) throws Exception {
-        return orderItemDto.add(form);
-    }
     @ApiOperation(value = "Gets all items by orderId")
     @RequestMapping(path = "/{orderId}", method = RequestMethod.GET)
     public List<OrderItemData> get(@PathVariable Integer orderId) throws ApiException {
         return orderItemDto.getOrder(orderId);
     }
-    @ApiOperation(value = "Gets invoice for an orderID")
-    @RequestMapping(path = "/invoice/{orderId}", method = RequestMethod.GET)
-    public void getInvoice(HttpServletResponse response,@PathVariable Integer orderId) throws ApiException, IOException, TransformerException {
-        service.getOrderInvoice(response,orderId);
-    }
+
 }

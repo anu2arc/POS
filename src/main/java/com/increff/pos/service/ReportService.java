@@ -62,29 +62,24 @@ public class ReportService {
     }
 
     public List<InventoryReportData> inventoryReport() throws ApiException {
-        List<InventoryReportData> report = new ArrayList<>();
-        HashMap<String,HashMap<String, InventoryReportData>> holder = new HashMap<String, HashMap<String, InventoryReportData>>();
-        List<InventoryPojo> ip=inventoryService.getAll();
-        for(InventoryPojo item:ip){
+        HashMap<String,InventoryReportData> holder = new HashMap<>();
+        List<InventoryPojo> inventoryPojoList=inventoryService.getAll();
+        for(InventoryPojo item:inventoryPojoList){
             ProductPojo productPojo=productService.get(item.getId());
             BrandPojo brandPojo=brandService.get(productPojo.getBrandCategory());
-            if(holder.containsKey(brandPojo.getBrand()) && holder.get(brandPojo.getBrand()).containsKey(brandPojo.getCategory())) {
-                Integer qty=holder.get(brandPojo.getBrand()).get(brandPojo.getCategory()).getQuantity();
-                holder.get(brandPojo.getBrand()).get(brandPojo.getCategory()).setQuantity(qty+ item.getQuantity());
+            if(holder.containsKey(brandPojo.getBrand()+brandPojo.getCategory())) {
+                int qty=holder.get(brandPojo.getBrand()+brandPojo.getCategory()).getQuantity();
+                holder.get(brandPojo.getBrand()+brandPojo.getCategory()).setQuantity(qty+ item.getQuantity());
             }
             else {
                 InventoryReportData inventoryReportData = new InventoryReportData();
                 inventoryReportData.setBrand(brandPojo.getBrand());
                 inventoryReportData.setCategory(brandPojo.getCategory());
                 inventoryReportData.setQuantity(item.getQuantity());
-                HashMap<String, InventoryReportData> temp=new HashMap<>();
-                temp.put(inventoryReportData.getCategory(), inventoryReportData);
-                holder.put(inventoryReportData.getBrand(),temp);
+                holder.put(inventoryReportData.getBrand()+inventoryReportData.getCategory(),inventoryReportData);
             }
         }
-        for (HashMap<String, InventoryReportData> item: holder.values()) {
-            report.addAll(item.values());
-        }
+        List<InventoryReportData> report = new ArrayList<>(holder.values());
         return report;
     }
 }

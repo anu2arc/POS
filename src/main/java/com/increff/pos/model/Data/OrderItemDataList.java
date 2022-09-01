@@ -17,9 +17,7 @@ public class OrderItemDataList {
     private Double total;
     private String time;
     private List<OrderItemPojo> orderItems;
-
     private String invoiceTime;
-
     public OrderItemDataList(){
     }
     public OrderItemDataList(List<OrderItemPojo> orderItemPojoList, ZonedDateTime time, Double total, Integer orderId) {

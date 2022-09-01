@@ -54,7 +54,7 @@ public class ProductDtoTest extends AbstractUnitTest {
             productDto.add(createProduct());
         }
         catch (ApiException exception){
-            assertEquals("please provide a valid brand category pair",exception.getMessage().trim());
+            assertEquals("Invalid Brand Category pair",exception.getMessage().trim());
         }
     }
 
@@ -101,7 +101,7 @@ public class ProductDtoTest extends AbstractUnitTest {
             productDto.bulkAdd(productFromList);
         }
         catch (ApiException exception){
-            assertEquals("1: please provide a valid brand category pair",exception.getMessage().trim());
+            assertEquals("1: Invalid Brand Category pair",exception.getMessage().trim());
         }
     }
 

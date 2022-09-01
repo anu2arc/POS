@@ -17,6 +17,9 @@ function addOrder() {
     else if (json['sellingprice'] <= 0 || json['sellingprice'] > 1000000) {
         $.notify("please provide a valid selling price", { autoHide: false });
     }
+    else if (isNaN(json['sellingprice'])) {
+        $.notify("please provide a valid selling price", { autoHide: false });
+    }
     else {
         var url = $("meta[name=baseUrl]").attr("content") + "/api/product/barcode" + "/" + json['barcode'];
         $.ajax({
@@ -51,6 +54,8 @@ function fetchQuantity(productData, json) {
 function frontEndValidate(productData, inventoryData, json) {
     if (inventoryData['quantity'] < json['quantity'])
         $.notify('Order Quantity exceeded max limit', { autoHide: false });
+    else if (productData['mrp'] < json['sellingprice'])
+        $.notify('Selling price cannot be more than MRP', { autoHide: false });
     else {
         productData = Object.assign(productData, inventoryData);
         productData = Object.assign(productData, json);
@@ -125,7 +130,7 @@ function refresh() {
 }
 
 function placeorder() {
-    var url = $("meta[name=baseUrl]").attr("content") + "/api/order-item";
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/order";
     $.ajax({
         url: url,
         type: 'POST',
@@ -138,6 +143,7 @@ function placeorder() {
             refresh();
         },
         error: function (response) {
+            console.log(response);
             $.notify(response, { autoHide: false });
         }
     });

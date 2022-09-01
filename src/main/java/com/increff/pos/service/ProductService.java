@@ -66,7 +66,6 @@ public class ProductService {
     @Transactional(rollbackOn  = ApiException.class)
     public void update(String barcode, ProductPojo pojo) throws ApiException {
         ProductPojo productPojo = getByBarcode(barcode);
-        productPojo.setBarcode(pojo.getBarcode());
         productPojo.setMrp(pojo.getMrp());
         productPojo.setName(pojo.getName());
     }

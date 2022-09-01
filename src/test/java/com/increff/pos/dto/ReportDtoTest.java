@@ -83,23 +83,23 @@ public class ReportDtoTest extends AbstractUnitTest {
         return reportForm;
     }
 
-    @Test
-    public void testSalesReport() throws Exception {
-        BrandForm brandPojo=createBrand();
-        brandDto.add(brandPojo);
-        productDto.add(createProduct());
-        inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
-        orderDto.add();
-        List<OrderItemForm> list=new ArrayList<>();
-        list.add(createOrder("test1",1,100));
-        orderItemDto.add(list);
-        List<SalesReportData> salesReportData=reportDto.salesReport(createForm());
-
-        assertEquals(1,salesReportData.size());
-        assertEquals("nike",salesReportData.get(0).getBrand());
-        assertEquals("shoes",salesReportData.get(0).getCategory());
-        assertEquals(100.0, salesReportData.get(0).getRevenue(), 0.0);
-    }
+//    @Test
+//    public void testSalesReport() throws Exception {
+//        BrandForm brandPojo=createBrand();
+//        brandDto.add(brandPojo);
+//        productDto.add(createProduct());
+//        inventoryDto.add(productDto.getByBarcode("test1").getId(),createInventory());
+//        orderDto.add();
+//        List<OrderItemForm> list=new ArrayList<>();
+//        list.add(createOrder("test1",1,100));
+//        orderItemDto.add(list);
+//        List<SalesReportData> salesReportData=reportDto.salesReport(createForm());
+//
+//        assertEquals(1,salesReportData.size());
+//        assertEquals("nike",salesReportData.get(0).getBrand());
+//        assertEquals("shoes",salesReportData.get(0).getCategory());
+//        assertEquals(100.0, salesReportData.get(0).getRevenue(), 0.0);
+//    }
 
     @Test
     public void testInventoryReport() throws Exception {

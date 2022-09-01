@@ -1,9 +1,11 @@
 package com.increff.pos.Util;
 
 import com.increff.pos.service.ApiException;
+import org.springframework.stereotype.Repository;
 
 import java.time.ZonedDateTime;
 
+@Repository
 public class OrderUtil {
     public ZonedDateTime convert(String date) throws ApiException {
         try{

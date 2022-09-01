@@ -34,6 +34,7 @@ function displayOrderList(data) {
     $tbody.empty();
     var button = 'type="button" class="btn btn-primary"';
     for (let i = 0; i < data.length; i++) {
+        console.log(data[i].time);
         date = getFormattedDate(data[i].time);
         var buttonHtml = '<button ' + button + 'onclick="viewOrder(' + data[i].id + ')">View</button>'
         buttonHtml += ' <button ' + button + ' onclick="invoice(' + data[i].id + ')">Invoice</button>'
@@ -117,6 +118,7 @@ function search() {
     var id = document.getElementById("orderid").value;
     var startdate = document.getElementById("startdate").value;
     var enddate = document.getElementById("enddate").value;
+    var date = new Date();
     console.log(startdate);
     if ((id == "" || isNaN(id)) && (startdate == "" || enddate == ""))
         $.notify("please provice a valid input", { autoHide: false });
@@ -125,9 +127,24 @@ function search() {
     }
     else if (startdate > enddate) {
         $.notify("Start Date cannot be greater than End Date", { autoHide: false });
+
+        document.getElementById('enddate').valueAsDate = date;
+        date.setMonth(date.getMonth() - 1);
+        document.getElementById('startdate').valueAsDate = date;
+        var $tbody = $('#order-table').find('tbody');
+        $tbody.empty();
+    }
+    else if (startdate > date) {
+        $.notify("Start Date cannot be greater than Todays Date", { autoHide: false });
+        document.getElementById('enddate').valueAsDate = date;
+        date.setMonth(date.getMonth() - 1);
+        document.getElementById('startdate').valueAsDate = date;
+        var $tbody = $('#order-table').find('tbody');
+        $tbody.empty();
     }
     else {
         var json = { "startDate": startdate + 'T00:00:00+00:00', "endDate": enddate + 'T23:59:00+00:00' };
+        console.log(json);
         showForDateRange(json);
     }
 }
@@ -163,7 +180,7 @@ function download(url) {
 }
 
 function invoice(id) {
-    var url = $("meta[name=baseUrl]").attr("content") + "/api/order-item/invoice/" + id;
+    var url = $("meta[name=baseUrl]").attr("content") + "/api/order/invoice/" + id;
     $.ajax({
         url: url,
         xhr: function () {

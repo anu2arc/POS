@@ -52,21 +52,15 @@ public class ProductDto {
                 productUtil.validate(productFormList.get(i));
                 check(productFormList.get(i));
                 productPojo= DtoHelper.convert(productFormList.get(i));
-            } catch (ApiException e) {
-                errorLog.append(i + 1).append(": ").append(e.getMessage()).append("\n");
-            }// todo
-            try{
                 BrandPojo brandPojo=brandService.checkPair(productFormList.get(i).getBrand(),productFormList.get(i).getCategory());
                 productPojo.setBrandCategory(brandPojo.getId());
                 list.add(productPojo);
-            }
-            catch (Exception e){
-                errorLog.append(i + 1).append(": please provide a valid brand category pair"); // todo change error message
+            } catch (ApiException e) {
+                errorLog.append(i + 1).append(": ").append(e.getMessage()).append("\n");
             }
         }
         if(errorLog.length()>0)
             throw new ApiException(errorLog.toString());
-        // todo make a set and check for barcode here only
         service.bulkAdd(list);
     }
 
