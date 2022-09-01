@@ -58,6 +58,8 @@ public class ReportService {
         for(HashMap<String, SalesReportData> reportData:holder.values()){
             list.addAll(reportData.values());
         }
+        if(list.size()==0)
+            throw new ApiException("No report for given input");
         return list;
     }
 
@@ -80,6 +82,9 @@ public class ReportService {
             }
         }
         List<InventoryReportData> report = new ArrayList<>(holder.values());
+        System.out.println(report.size());
+        if(report.size()==0)
+            throw new ApiException("No report for given input");
         return report;
     }
 }

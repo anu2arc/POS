@@ -12,15 +12,15 @@ public class ProductUtil {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("0.00");
     public void validate(ProductForm form) throws ApiException {
-        if(Objects.isNull(form.getBarcode()) || form.getBarcode().equals(""))
+        if(Objects.isNull(form.getBarcode()) || form.getBarcode().trim().equals(""))
             throw new ApiException("Barcode cannot be empty");
         if(form.getBarcode().length()>20)
             throw new ApiException("Barcode length is too long");
-        if(Objects.isNull(form.getBrand()) ||form.getBrand().equals(""))
+        if(Objects.isNull(form.getBrand()) ||form.getBrand().trim().equals(""))
             throw new ApiException("Brand cannot be empty");
-        if(Objects.isNull(form.getCategory()) ||form.getCategory().equals(""))
+        if(Objects.isNull(form.getCategory()) ||form.getCategory().trim().equals(""))
             throw new ApiException("Category cannot be empty");
-        if(Objects.isNull(form.getName()) || Objects.equals(form.getName(), ""))
+        if(Objects.isNull(form.getName()) || form.getName().trim().equals(""))
             throw new ApiException("Product Name cannot be empty");
         if(form.getName().length()>20)
             throw new ApiException("Name length is too long");
@@ -38,6 +38,8 @@ public class ProductUtil {
     }
     protected static void normalize(ProductForm productFrom) {
         productFrom.setBarcode(productFrom.getBarcode().toLowerCase().trim());
+        productFrom.setBrand(productFrom.getBrand().toLowerCase().trim());
+        productFrom.setCategory(productFrom.getCategory().toLowerCase().trim());
         productFrom.setName((productFrom.getName().toLowerCase().trim()));
         productFrom.setMrp(Double.valueOf(DECIMAL_FORMAT.format(productFrom.getMrp())));
     }

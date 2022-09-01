@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class OrderItemUtil {
     public void validate(OrderItemForm orderItem) throws ApiException {
-        if(orderItem.getBarcode().isEmpty())
+        if(orderItem.getBarcode().isEmpty() || orderItem.getBarcode().trim().equals(""))
             throw new ApiException("Barcode cannot be empty");
     }
     protected static void normalize(OrderItemForm itemForm) {

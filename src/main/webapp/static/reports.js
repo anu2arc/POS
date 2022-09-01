@@ -9,7 +9,6 @@ function search() {
     var json = toJson($form);
     json.startDate = json.startDate + 'T00:00:00+00:00';
     json.endDate = json.endDate + 'T23:59:00+00:00';
-    console.log(json);
     if (((json.startDate == "") || (json.endDate == "")) && json.brand == "" && json.category == "") {
         $.notify("please provide a valid input", { autoHide: false });
     }
@@ -26,7 +25,7 @@ function search() {
             writeFileData(response);
         },
         error: function (response) {
-            $.notify(response['responseJSON']['description'], { autoHide: false });
+            $.notify(response['responseJSON']['message'], { autoHide: false });
         }
     });
 

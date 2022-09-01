@@ -181,8 +181,8 @@ function uploadRows() {
 			updateUploadDialog();
 		},
 		error: function (response) {
-			var json = { description: response.responseJSON.description };
 			errorData.push(json);
+			console.log(errorData);
 			processCount = fileData.length;
 			$.notify("Error please download error report", { autoHide: false });
 			updateUploadDialog();

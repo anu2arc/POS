@@ -27,13 +27,17 @@ public class BrandDto {
     public void bulkAdd(List<BrandForm> forms) throws ApiException {
         List<BrandPojo> list=new ArrayList<>();
         StringBuilder errorLog=new StringBuilder();
-        for(int i=0;i<forms.size();i++){
+        int row=0;
+        for(BrandForm form:forms){
+            row++;
             try {
-                BrandUtil.validate(forms.get(i));
-                check(forms.get(i));
-                list.add(DtoHelper.convert(forms.get(i)));
+                BrandUtil.validate(form);
+                check(form);
+                list.add(DtoHelper.convert(form));
+                System.out.println("clear");
             } catch (ApiException e) {
-                errorLog.append(i + 1).append(": ").append(e.getMessage()).append("\n");
+                System.out.println("exception");
+                errorLog.append(row).append(": ").append(e.getMessage()).append("\n");
             }
         }
         if(!errorLog.toString().isEmpty())
